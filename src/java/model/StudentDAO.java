@@ -11,7 +11,7 @@ public class StudentDAO {
     public StudentDAO() {
         try {
             // Load the MySQL driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.err.println("MySQL Driver not found: " + e.getMessage());
         }
@@ -19,8 +19,7 @@ public class StudentDAO {
 
     // INSERT: Add student to the database
     public void addStudent(Student student) {
-        String sql = "INSERT INTO student (studentID, studPasswords, studName, studNumber, studEmergencyNumber, studSemester, studCGPA, houseIncome, studGender, roomID) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO student (studentID, studPasswords, studName, studNumber, studEmergencyNumber, studSemester, studCGPA, houseIncome, studGender, roomID)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
