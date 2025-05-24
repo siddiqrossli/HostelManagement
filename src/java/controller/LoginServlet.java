@@ -8,22 +8,19 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
 
 public class LoginServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String id = request.getParameter("studentId");
         String pass = request.getParameter("password");
 
         StudentDAO dao = new StudentDAO();
-        Student student = dao.getStudentByIdAndPassword(id, pass);
+        Student student = dao.getStudentByIdAndPassword(id, pass);  
 
-        if (student != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("student", student); // or store just ID
-            response.sendRedirect("dashboard.jsp");
-        } else {
-            request.setAttribute("errorMessage", "Invalid credentials");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
+        HttpSession session = request.getSession();
+        session.setAttribute("studentId", id);  
+
+        response.sendRedirect("studentDashboard.jsp");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

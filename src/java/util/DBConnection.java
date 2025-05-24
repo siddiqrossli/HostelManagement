@@ -11,7 +11,7 @@ public class DBConnection {
 
     public static Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // For MySQL 8+
+            Class.forName("com.mysql.jdbc.Driver"); // For MySQL 8+
             System.out.println("MySQL Driver loaded successfully.");
         } catch (ClassNotFoundException e) {
             throw new SQLException("MySQL Driver not found", e);
