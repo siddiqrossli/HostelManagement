@@ -12,7 +12,7 @@ public class StudentDAO {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             // Establish the connection
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hostelmanagement", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hostelmanagement?zeroDateTimeBehavior=convertToNull", "root", "");
 
             // Check if the connection is successful
             if (conn != null) {
