@@ -11,7 +11,7 @@
     <title>Student Dashboard</title>
 </head>
 <body>
-    <h2>Welcome Student: <%= session.getAttribute("studentId") %></h2>
+    <h2>Welcome Student: <%= session.getAttribute("studentName") %></h2>
 
     <ul>
         <!-- List of available actions for the student -->

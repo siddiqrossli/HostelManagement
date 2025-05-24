@@ -5,17 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/hostelmanagement?zeroDateTimeBehavior=convertToNull";
-    private static final String USER = "root";
-    private static final String PASSWORD = ""; // Leave empty if no password
+    private static final String URL = "jdbc:derby://localhost:1527/HostelManagementNB";
+    private static final String USER = "app";
+    private static final String PASSWORD = "app"; // Leave empty if no password
 
     public static Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.jdbc.Driver"); // For MySQL 8+
-            System.out.println("MySQL Driver loaded successfully.");
+            Class.forName("org.apache.derby.jdbc.ClientDriver"); // Load Derby Driver
+            System.out.println("Derby Driver loaded successfully.");
         } catch (ClassNotFoundException e) {
-            throw new SQLException("MySQL Driver not found", e);
+            throw new SQLException("Derby Driver not found", e);
         }
+
         try {
             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connection to database established.");

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Register</title>
+    <title>Student Registration</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,12 +31,21 @@
 
 <div class="container">
     <h2>Student Registration</h2>
+
+    <%-- Show error or success message if set --%>
+    <c:if test="${not empty error}">
+        <div style="color: red;">${error}</div>
+    </c:if>
+    <c:if test="${not empty message}">
+        <div style="color: green;">${message}</div>
+    </c:if>
+
     <form action="RegisterServlet" method="post">
         <div class="form-group">
             <label for="studentId">Student ID:</label>
             <input type="text" name="studentId" id="studentId" required />
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required />
         </div>
@@ -66,16 +75,14 @@
         </div>
         <div class="form-group">
             <label for="gender">Gender:</label>
-            <select name="gender" id="gender">
+            <select name="gender" id="gender" required>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
             </select>
         </div>
-        <!-- Uncomment the line below if needed -->
-        <!-- <div class="form-group">
-            <label for="roomId">Room ID:</label>
-            <input type="text" name="roomId" id="roomId" />
-        </div> -->
+        
+        <!-- Room ID field removed, automatically set to NULL in the backend -->
+        
         <div class="form-group">
             <button type="submit" class="submit-button">Register</button>
         </div>
