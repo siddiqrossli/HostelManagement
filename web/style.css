@@ -538,15 +538,23 @@ button {
   font-size: 14px;
 }
 
-/* Logout Button */
-.logout-btn {
-  background-color: #444;
-  color: white;
-  padding: 8px 20px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-}
+  /* Logout Button */
+  .logout-btn {
+    background-color: #444;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    width: auto; /* Important fix */
+    min-width: 100px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .logout-btn:hover {
+    background-color: #555;
+  }
 
 /* === Update Profile Page Specific Styles === */
 .update-profile-container {
