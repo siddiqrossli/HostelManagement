@@ -3,13 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Staff</title>
+  <title>Admin Dashboard</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     .info-row {
       display: flex;
       gap: 20px;
       margin-bottom: 20px;
+    }
+    .full-width-box {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .horizontal-box, .info-box, .change-box {
+      flex: 1;
+      background-color: rgba(137, 65, 66, 0.95);
+      padding: 15px;
+      border-radius: 10px;
+      color: white;
     }
     .logout-btn {
       background-color: #444;
@@ -35,73 +47,20 @@
       border: none;
       border-top: 1px solid #ccc;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      background-color: rgba(137, 65, 66, 0.95);
-      color: white;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #7a3a3a;
-    }
-    th {
-      background-color: #7a3a3a;
-    }
-    tr:hover {
-      background-color: rgba(122, 58, 58, 0.5);
-    }
-    .table-container {
-      padding: 20px;
-    }
-    .table-header {
+    .change-options {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      padding: 0 20px;
+      gap: 20px;
+      margin-top: 30px;
     }
-    .title-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .search-container {
-      display: flex;
-      gap: 10px;
-    }
-    .search-input {
-      padding: 8px 15px;
-      border-radius: 20px;
-      border: none;
-      background-color: #7a3a3a;
-      color: white;
-      width: 200px;
-    }
-    .search-input::placeholder {
-      color: #ddd;
-    }
-    .search-button {
+    .change-box button {
       background-color: #894142;
-      color: white;
+      border-radius: 25px;
       border: none;
-      padding: 8px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-    .add-staff-btn {
-      background-color: #4CAF50;
+      padding: 10px;
       color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      width: 120px;
       font-weight: bold;
+      width: 100%;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -122,7 +81,7 @@
           <p>Admin</p>
         </div>
         <button class="change-links button">VIEW MAINTENANCE</button>
-        <button class="change-links button active">VIEW STAFF</button>
+        <button class="change-links button">VIEW STAFF</button>
         <button class="change-links button">VIEW STUDENT</button>
         <button class="change-links button">VIEW ROOM</button>
         <button class="change-links button">VIEW BILLS</button>
@@ -131,79 +90,48 @@
 
     <div class="main-dashboard">
       <div class="welcome-box">
-        <div class="table-header">
-          <div class="title-container">
-            <h2 class="table-title">List of Staff</h2>
-            <button class="add-staff-btn">Add Staff</button>
+        <h1>WELCOME BACK, AMEER</h1>
+        <div class="info-row">
+          <div class="info-box">
+            <p><strong>Name:</strong> AMEER FARHAN BIN NAJWA</p>
+            <p><strong>ID:</strong> 206787</p>
+            <p><strong>Phone:</strong> 01176876874</p>
+            <p><strong>Email:</strong> 206787@gmail.com</p>
+            <p><strong>Position:</strong> Admin</p>
           </div>
-          <div class="search-container">
-            <input type="text" placeholder="Search..." class="search-input">
-            <button class="search-button">Search</button>
+          <div class="info-box">
+            <h4>Maintenance</h4>
+            <p>Electrical: 10<br>Plumber: 7<br>Others: 0</p>
           </div>
         </div>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Staff ID</th>
-                <th>Name</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Position</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>201</td>
-                <td>ALTAA</td>
-                <td>0187654456</td>
-                <td>alta@gmail.com</td>
-                <td>staff</td>
-              </tr>
-              <tr>
-                <td>202</td>
-                <td>FARIS</td>
-                <td>0199765543</td>
-                <td>faris@gmail.com</td>
-                <td>technician</td>
-              </tr>
-              <tr>
-                <td>203</td>
-                <td>MARIA</td>
-                <td>0199872522</td>
-                <td>maria@gmail.com</td>
-                <td>staff</td>
-              </tr>
-              <tr>
-                <td>204</td>
-                <td>LAILA</td>
-                <td>0139882520</td>
-                <td>laila@gmail.com</td>
-                <td>plumber</td>
-              </tr>
-              <tr>
-                <td>205</td>
-                <td>ANIRUL HATKAL</td>
-                <td>01161293559</td>
-                <td>ahaikala@gmail.com</td>
-                <td>technician</td>
-              </tr>
-              <tr>
-                <td>206</td>
-                <td>ASYRAF NUEZ</td>
-                <td>0198767865</td>
-                <td>asymues@gmail.com</td>
-                <td>technician</td>
-              </tr>
-              <tr>
-                <td>207</td>
-                <td>HAZIQ ROZAINT</td>
-                <td>0187876564</td>
-                <td>ziqmi@gmail.com</td>
-                <td>plumber</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="full-width-box">
+          <div class="horizontal-box">
+            <h4>Student</h4>
+            <p>432</p>
+          </div>
+          <div class="horizontal-box">
+            <h4>Staff</h4>
+            <p>Electrician: 5<br>Plumber: 6<br>Staff Kolej: 8</p>
+          </div>
+          <div class="horizontal-box">
+            <h4>Hang Tuah</h4>
+            <p>Unoccupied: 31<br>Occupied: 169</p>
+          </div>
+          <div class="horizontal-box">
+            <h4>Tun Fatimah</h4>
+            <p>NT9: 2<br>NT7: 2<br>K14: 10</p>
+          </div>
+        </div>
+        <div class="change-options">
+          <div class="change-box">
+            <button>CHANGE PASSWORD</button>
+          </div>
+          <div class="change-box">
+            <button>CHANGE PHONE NUMBER</button>
+          </div>
+          <div class="change-box">
+            <button>CHANGE EMAIL</button>
+          </div>
         </div>
       </div>
     </div>
