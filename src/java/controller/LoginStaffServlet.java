@@ -16,12 +16,12 @@ public class LoginStaffServlet extends HttpServlet {
         // Validate input fields
         if (id == null || pass == null || id.trim().isEmpty() || pass.trim().isEmpty()) {
             request.setAttribute("error", "Please enter both staff ID and password.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("loginStaff.jsp").forward(request, response);
             return;
         }
 
         // SQL query to validate user credentials
-        String sql = "SELECT * FROM student WHERE studentID = ? AND studPassword = ?";
+        String sql = "SELECT * FROM student WHERE staffID = ? AND staffPassword = ?";
 
         // Use try-with-resources to automatically close connection and statement
         try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/HostelManagementNB", "app", "app");
@@ -37,10 +37,10 @@ public class LoginStaffServlet extends HttpServlet {
             if (rs.next()) {
                 // User found, create session and store student info in session
                 HttpSession session = request.getSession();
-                session.setAttribute("studentId", id);  // Store studentId in session
-                session.setAttribute("studentName", rs.getString("studName"));  // Store studentName in session
+                session.setAttribute("staffId", id);  // Store studentId in session
+                session.setAttribute("staffName", rs.getString("staffName"));  // Store studentName in session
 
-                response.sendRedirect("studentDashboard.jsp");  // Redirect to student dashboard
+                response.sendRedirect("staffDashboard.jsp");  // Redirect to student dashboard
             } else {
                 // Invalid credentials
                 request.setAttribute("error", "Invalid student ID or password.");
@@ -51,12 +51,12 @@ public class LoginStaffServlet extends HttpServlet {
             // Handle SQL exceptions (database errors)
             e.printStackTrace();
             request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("loginStaff.jsp").forward(request, response);
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.sendRedirect("login.jsp");  // Redirect to login page if accessed via GET
+        response.sendRedirect("loginStaff.jsp");  // Redirect to login page if accessed via GET
     }
 }
