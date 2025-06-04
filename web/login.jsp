@@ -30,14 +30,13 @@
 <div class="login-container">
     <h2>Student Login</h2>
 
-    <%-- THIS IS THE CRITICAL CHANGE --%>
     <c:if test="${not empty requestScope.error}">
         <div class="error-message">
             ${requestScope.error}
         </div>
     </c:if>
 
-    <form action="login" method="post"> <%-- Ensure this action matches your @WebServlet mapping --%>
+    <form action="login" method="post"> 
         <div class="form-group">
             <label for="studentId">Student ID:</label>
             <input type="text" id="studentId" name="studentId" required>
