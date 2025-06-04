@@ -60,8 +60,8 @@ public class RegisterServlet extends HttpServlet {
         // Database connection details
         // **IMPORTANT: Ensure 'hostel_management' matches your exact database name (case-sensitive if on Linux)**
         String jdbcURL = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&useSSL=false";
-        String jdbcUsername = "root";
-        String jdbcPassword = ""; // As per your current setup, root has no password
+        String jdbcUsername = "farish";
+        String jdbcPassword = "kakilangit"; // As per your current setup, root has no password
 
         try {
             // Explicitly load the JDBC driver (recommended for robustness)

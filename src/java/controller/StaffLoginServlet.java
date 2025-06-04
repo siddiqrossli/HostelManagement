@@ -1,14 +1,15 @@
 package controller;
 
-import model.Student; // Assuming you have this model class
+// No direct model.Student import needed if staff has its own model or isn't used
+// import model.Staff; // If you create a Staff model class, import it here
 import java.io.*;
 import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet; // Don't forget this import for @WebServlet annotation
 
-@WebServlet("/login") // This maps the URL '/login' to this servlet
-public class LoginServlet extends HttpServlet {
+@WebServlet("/staffLogin") // IMPORTANT: Map this servlet to a new URL, e.g., "/staffLogin"
+public class StaffLoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L; // Recommended for Servlets
 
@@ -20,26 +21,28 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String id = request.getParameter("studentId");
-        String pass = request.getParameter("password");
+        // Retrieve form parameters for staff login
+        String staffId = request.getParameter("staffId"); // Assuming input field name is "staffId"
+        String staffPass = request.getParameter("staffPassword"); // Assuming input field name is "staffPassword"
 
         // Validate input fields - basic null and empty check
-        if (id == null || pass == null || id.trim().isEmpty() || pass.trim().isEmpty()) {
-            request.setAttribute("error", "Please enter both student ID and password.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        if (staffId == null || staffPass == null || staffId.trim().isEmpty() || staffPass.trim().isEmpty()) {
+            request.setAttribute("error", "Please enter both Staff ID and password.");
+            // Redirect to a staff login JSP, e.g., "staffLogin.jsp"
+            request.getRequestDispatcher("staffLogin.jsp").forward(request, response);
             return;
         }
 
         // Database connection details
         // **IMPORTANT: Ensure 'hostel_management' matches your exact database name (case-sensitive if on Linux)**
         String jdbcURL = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&useSSL=false";
-        String jdbcUsername = "farish"; // Your user created in phpMyAdmin
+        String jdbcUsername = "farish"; // Or a specific staff-level database user if you create one
         String jdbcPassword = "kakilangit"; // The password for the 'farish' user
 
-        // SQL query to retrieve the plain-text password and name for comparison
+        // SQL query to retrieve the plain-text password and name for comparison from the 'staff' table
         // **WARNING: This approach is INSECURE for production applications.**
         // Passwords should always be hashed and compared securely.
-        String sql = "SELECT studPassword, studName FROM student WHERE studentID = ?";
+        String sql = "SELECT staffPassword, staffName FROM staff WHERE staffID = ?";
 
         try {
             // Explicitly load the JDBC driver (recommended for robustness)
@@ -49,35 +52,35 @@ public class LoginServlet extends HttpServlet {
             try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-                // Set the parameter for the SQL query (studentID)
-                pstmt.setString(1, id);
+                // Set the parameter for the SQL query (staffID)
+                pstmt.setString(1, staffId);
 
                 // Execute the query
                 ResultSet rs = pstmt.executeQuery();
 
                 if (rs.next()) {
-                    // User ID found, now retrieve the stored plain-text password
-                    String storedPlainPassword = rs.getString("studPassword");
-                    String studentName = rs.getString("studName");
+                    // Staff ID found, now retrieve the stored plain-text password
+                    String storedPlainPassword = rs.getString("staffPassword");
+                    String staffName = rs.getString("staffName");
 
                     // Compare the provided plain-text password with the stored plain-text password
                     // **WARNING: This is the INSECURE comparison.**
-                    if (pass.equals(storedPlainPassword)) {
-                        // Password matches, create session and store student info
+                    if (staffPass.equals(storedPlainPassword)) {
+                        // Password matches, create session and store staff info
                         HttpSession session = request.getSession();
-                        session.setAttribute("studentId", id);       // Store studentId in session
-                        session.setAttribute("studentName", studentName); // Store studentName in session
+                        session.setAttribute("staffId", staffId);       // Store staffId in session
+                        session.setAttribute("staffName", staffName); // Store staffName in session
 
-                        response.sendRedirect("dashboard.jsp"); // Redirect to student dashboard
+                        response.sendRedirect("staffDashboard.jsp"); // Redirect to staff dashboard
                     } else {
                         // Password does not match
-                        request.setAttribute("error", "Invalid student ID or password.");
-                        request.getRequestDispatcher("login.jsp").forward(request, response); // Stay on login page
+                        request.setAttribute("error", "Invalid Staff ID or password.");
+                        request.getRequestDispatcher("staffLogin.jsp").forward(request, response); // Stay on staff login page
                     }
                 } else {
-                    // User ID not found in the database
-                    request.setAttribute("error", "Invalid student ID or password.");
-                    request.getRequestDispatcher("login.jsp").forward(request, response); // Stay on login page
+                    // Staff ID not found in the database
+                    request.setAttribute("error", "Invalid Staff ID or password.");
+                    request.getRequestDispatcher("staffLogin.jsp").forward(request, response); // Stay on staff login page
                 }
 
             } // Connection, PreparedStatement, and ResultSet (implicitly) are automatically closed here
@@ -85,19 +88,19 @@ public class LoginServlet extends HttpServlet {
             // This catches errors if the JDBC driver class cannot be found
             e.printStackTrace(); // Print stack trace to server console for debugging
             request.setAttribute("error", "JDBC Driver not found. Please ensure MySQL Connector/J JAR is in your project libraries.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("staffLogin.jsp").forward(request, response);
         } catch (SQLException e) {
             // This catches any database-related errors (e.g., connection issues, query errors)
             e.printStackTrace(); // Print stack trace to server console for debugging
             request.setAttribute("error", "Database error: " + e.getMessage()); // Provide specific error message to user
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("staffLogin.jsp").forward(request, response);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        // If someone tries to access /login directly via GET, redirect them to the login form
-        response.sendRedirect("login.jsp");
+        // If someone tries to access /staffLogin directly via GET, redirect them to the staff login form
+        response.sendRedirect("staffLogin.jsp"); // Assuming a staff login JSP exists
     }
 }

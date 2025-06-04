@@ -8,7 +8,7 @@
 <html>
 <head><title>Student Dashboard</title></head>
 <body>
-    <h2>Welcome, <%= session.getAttribute("studentId") %></h2>
+    <h2>Welcome, <%= session.getAttribute("studentName") %></h2>
     <ul>
         <li><a href="updateProfile.jsp">Update Profile</a></li>
         <li><a href="changePassword.jsp">Change Password</a></li>

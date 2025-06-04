@@ -36,6 +36,14 @@
         <servlet-name>ApplyCollegeServlet</servlet-name>
         <servlet-class>controller.ApplyCollegeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>staffRegisterServlet</servlet-name>
+        <servlet-class>controller.StaffRegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffLoginServlet</servlet-name>
+        <servlet-class>controller.StaffLoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>ApplyCollegeServlet</servlet-name>
         <url-pattern>/ApplyCollegeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>staffRegisterServlet</servlet-name>
+        <url-pattern>/staffRegisterServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffLoginServlet</servlet-name>
+        <url-pattern>/StaffLoginServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

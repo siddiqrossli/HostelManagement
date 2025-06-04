@@ -10,8 +10,8 @@ public class DBTest{
         // Database connection details
         //String url = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull";
         String url = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull";
-        String user = "root";  // Replace with your MySQL username
-        String password = "";  // Replace with your MySQL password if necessary
+        String user = "farish";  // Replace with your MySQL username
+        String password = "kakilangit";  // Replace with your MySQL password if necessary
 
         // Establish the connection
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
