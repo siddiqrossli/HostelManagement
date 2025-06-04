@@ -38,11 +38,11 @@
 
     <ul>
         <li><a href="updateProfile">Update Profile</a></li>
-        <li><a href="changePassword.jsp">Change Password</a></li>
+        <li><a href="changePassword">Change Password</a></li>
         <li><a href="roomBooking.jsp">Book Room</a></li>
         <li><a href="requestMaintenance.jsp">Request Maintenance</a></li>
         <li><a href="bill.jsp">View Bills</a></li>
-        <li><a href="logout.jsp">Logout</a></li>
+         <li><a href="logout">Logout</a></li>
     </ul>
 </body>
 </html>
