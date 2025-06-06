@@ -2,7 +2,7 @@ package controller;
 
 import model.Student; // Assuming you have this model class
 import java.io.*;
-import java.sql.*;
+import java.sql.*; // Make sure ResultSet is imported from here
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet; // Don't forget this import for @WebServlet annotation
@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String id = request.getParameter("studentId");
         String pass = request.getParameter("password");
 
@@ -31,73 +31,66 @@ public class LoginServlet extends HttpServlet {
         }
 
         // Database connection details
-        // **IMPORTANT: Ensure 'hostel_management' matches your exact database name (case-sensitive if on Linux)**
         String jdbcURL = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&useSSL=false";
         String jdbcUsername = "farish"; // Your user created in phpMyAdmin
         String jdbcPassword = "kakilangit"; // The password for the 'farish' user
 
-        // SQL query to retrieve the plain-text password and name for comparison
-        // **WARNING: This approach is INSECURE for production applications.**
-        // Passwords should always be hashed and compared securely.
         String sql = "SELECT studPassword, studName FROM student WHERE studentID = ?";
 
         try {
-            // Explicitly load the JDBC driver (recommended for robustness)
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Use "com.mysql.cj.jdbc.Driver" for MySQL Connector/J 8.x and later
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-            // Use try-with-resources to automatically close connection and statement
             try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-                // Set the parameter for the SQL query (studentID)
                 pstmt.setString(1, id);
 
-                // Execute the query
                 ResultSet rs = pstmt.executeQuery();
 
                 if (rs.next()) {
-                    // User ID found, now retrieve the stored plain-text password
                     String storedPlainPassword = rs.getString("studPassword");
                     String studentName = rs.getString("studName");
 
-                    // Compare the provided plain-text password with the stored plain-text password
-                    // **WARNING: This is the INSECURE comparison.**
                     if (pass.equals(storedPlainPassword)) {
-                        // Password matches, create session and store student info
                         HttpSession session = request.getSession();
-                        session.setAttribute("studentId", id);       // Store studentId in session
-                        session.setAttribute("studentName", studentName); // Store studentName in session
+                        session.setAttribute("studentId", id);
+                        session.setAttribute("studentName", studentName);
+
+                        // --- CORRECTED PLACEMENT FOR DEBUG PRINTS ---
+                        System.out.println("--- LoginServlet Debug ---");
+                        System.out.println("Login Successful for Student ID: " + id);
+                        System.out.println("Session ID created/retrieved: " + session.getId());
+                        System.out.println("Session attribute 'studentId': " + session.getAttribute("studentId"));
+                        System.out.println("Session attribute 'studentName': " + session.getAttribute("studentName"));
+                        System.out.println("Redirecting to dashboard.jsp");
+                        System.out.println("--------------------------");
+                        // --- END DEBUG PRINTS ---
 
                         response.sendRedirect("dashboard.jsp"); // Redirect to student dashboard
                     } else {
-                        // Password does not match
                         request.setAttribute("error", "Invalid student ID or password.");
-                        request.getRequestDispatcher("login.jsp").forward(request, response); // Stay on login page
+                        request.getRequestDispatcher("login.jsp").forward(request, response);
                     }
                 } else {
-                    // User ID not found in the database
                     request.setAttribute("error", "Invalid student ID or password.");
-                    request.getRequestDispatcher("login.jsp").forward(request, response); // Stay on login page
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
 
-            } // Connection, PreparedStatement, and ResultSet (implicitly) are automatically closed here
+            }
         } catch (ClassNotFoundException e) {
-            // This catches errors if the JDBC driver class cannot be found
-            e.printStackTrace(); // Print stack trace to server console for debugging
+            e.printStackTrace();
             request.setAttribute("error", "JDBC Driver not found. Please ensure MySQL Connector/J JAR is in your project libraries.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } catch (SQLException e) {
-            // This catches any database-related errors (e.g., connection issues, query errors)
-            e.printStackTrace(); // Print stack trace to server console for debugging
-            request.setAttribute("error", "Database error: " + e.getMessage()); // Provide specific error message to user
+            e.printStackTrace();
+            request.setAttribute("error", "Database error: " + e.getMessage());
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        // If someone tries to access /login directly via GET, redirect them to the login form
+            throws ServletException, IOException {
         response.sendRedirect("login.jsp");
     }
 }

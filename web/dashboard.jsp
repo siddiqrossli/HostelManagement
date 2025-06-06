@@ -1,48 +1,43 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%-- ADD THIS LINE for JSTL --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
-    // This scriptlet ensures the user is logged in
-    if (session.getAttribute("studentId") == null) {
-        response.sendRedirect("login.jsp");
-        return;
+    // --- ADD THESE DEBUG PRINTS ---
+    HttpSession currentDashboardSession = request.getSession(false); // Get existing session, don't create new
+    System.out.println("--- Dashboard.jsp Debug ---");
+    if (currentDashboardSession != null) {
+        System.out.println("Dashboard.jsp loaded. Session ID: " + currentDashboardSession.getId());
+        System.out.println("Session attribute 'studentId': " + currentDashboardSession.getAttribute("studentId"));
+        System.out.println("Session attribute 'studentName': " + currentDashboardSession.getAttribute("studentName"));
+    } else {
+        System.out.println("Dashboard.jsp loaded. WARNING: Session is NULL!");
     }
+    System.out.println("--------------------------");
+    // --- END DEBUG PRINTS ---
 %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Student Dashboard</title>
     <style>
-        /* Optional: Add basic styling for the success message */
-        .success-alert {
-            background-color: #d4edda; /* Light green background */
-            color: #155724; /* Dark green text */
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px; /* Space below the alert */
-            border: 1px solid #c3e6cb; /* Green border */
-            text-align: center;
-            font-weight: bold;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        h1 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; }
+        a { text-decoration: none; color: #007bff; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <h2>Welcome, <%= session.getAttribute("studentName") %></h2>
-
-    <%-- JSTL to check for and display the success message --%>
-    <c:if test="${not empty sessionScope.successMessage}">
-        <div class="success-alert">
-            ${sessionScope.successMessage}
-        </div>
-        <%-- Remove the message from session so it doesn't reappear on refresh or subsequent visits --%>
-        <c:remove var="successMessage" scope="session"/>
-    </c:if>
-
+    <h1>Welcome, ${sessionScope.studentName}</h1> <%-- Using sessionScope for welcome message --%>
     <ul>
         <li><a href="updateProfile">Update Profile</a></li>
-        <li><a href="changePassword">Change Password</a></li>
-        <li><a href="roomBooking.jsp">Book Room</a></li>
-        <li><a href="requestMaintenance.jsp">Request Maintenance</a></li>
-        <li><a href="bill.jsp">View Bills</a></li>
-         <li><a href="logout">Logout</a></li>
+        <li><a href="changePassword.jsp">Change Password</a></li>
+        <li><a href="bookRoom.jsp">Book Room</a></li>
+        <li><a href="requestMaintenance">Request Maintenance</a></li> <%-- Link to servlet --%>
+        <li><a href="viewBills.jsp">View Bills</a></li>
+        <li><a href="logout">Logout</a></li>
     </ul>
 </body>
 </html>
