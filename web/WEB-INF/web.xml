@@ -48,6 +48,18 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>controller.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewMaintenanceStatus</servlet-name>
+        <servlet-class>controller.ViewMaintenanceStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MaintenanceRequest</servlet-name>
+        <servlet-class>model.MaintenanceRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewMaintenanceStatusServlet</servlet-name>
+        <servlet-class>controller.ViewMaintenanceStatusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -95,6 +107,18 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMaintenanceStatus</servlet-name>
+        <url-pattern>/ViewMaintenanceStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintenanceRequest</servlet-name>
+        <url-pattern>/MaintenanceRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMaintenanceStatusServlet</servlet-name>
+        <url-pattern>/ViewMaintenanceStatusServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
