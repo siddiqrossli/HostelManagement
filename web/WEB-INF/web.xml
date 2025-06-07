@@ -1,126 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee  http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>controller.RegisterServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateProfileServlet</servlet-name>
-        <servlet-class>controller.UpdateProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ChangePasswordServlet</servlet-name>
-        <servlet-class>controller.ChangePasswordServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RoomBookingServlet</servlet-name>
-        <servlet-class>controller.RoomBookingServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RequestMaintenanceServlet</servlet-name>
-        <servlet-class>controller.RequestMaintenanceServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewBillServlet</servlet-name>
-        <servlet-class>controller.ViewBillServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AdminDashboardServlet</servlet-name>
-        <servlet-class>controller.AdminDashboardServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ApplyCollegeServlet</servlet-name>
-        <servlet-class>controller.ApplyCollegeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>staffRegisterServlet</servlet-name>
-        <servlet-class>controller.StaffRegisterServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>StaffLoginServlet</servlet-name>
-        <servlet-class>controller.StaffLoginServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>controller.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewMaintenanceStatus</servlet-name>
-        <servlet-class>controller.ViewMaintenanceStatus</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>MaintenanceRequest</servlet-name>
-        <servlet-class>model.MaintenanceRequest</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewMaintenanceStatusServlet</servlet-name>
-        <servlet-class>controller.ViewMaintenanceStatusServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>controller.RegisterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <servlet-class>controller.UpdateProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UpdateProfileServlet</servlet-name>
         <url-pattern>/UpdateProfileServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>controller.ChangePasswordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ChangePasswordServlet</servlet-name>
         <url-pattern>/ChangePasswordServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RoomBookingServlet</servlet-name>
+        <servlet-class>controller.RoomBookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RoomBookingServlet</servlet-name>
         <url-pattern>/RoomBookingServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RequestMaintenanceServlet</servlet-name>
+        <servlet-class>controller.RequestMaintenanceServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RequestMaintenanceServlet</servlet-name>
         <url-pattern>/RequestMaintenanceServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ViewBillServlet</servlet-name>
+        <servlet-class>controller.ViewBillServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewBillServlet</servlet-name>
         <url-pattern>/ViewBillServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>controller.AdminDashboardServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminDashboardServlet</servlet-name>
         <url-pattern>/AdminDashboardServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ApplyCollegeServlet</servlet-name>
+        <servlet-class>controller.ApplyCollegeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ApplyCollegeServlet</servlet-name>
         <url-pattern>/ApplyCollegeServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>staffRegisterServlet</servlet-name>
+        <servlet-class>controller.StaffRegisterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>staffRegisterServlet</servlet-name>
         <url-pattern>/staffRegisterServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>StaffLoginServlet</servlet-name>
+        <servlet-class>controller.StaffLoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/StaffLoginServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ViewMaintenanceStatus</servlet-name>
-        <url-pattern>/ViewMaintenanceStatus</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MaintenanceRequest</servlet-name>
-        <url-pattern>/MaintenanceRequest</url-pattern>
-    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ViewMaintenanceStatusServlet</servlet-name>
+        <servlet-class>controller.ViewMaintenanceStatusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMaintenanceStatusServlet</servlet-name>
         <url-pattern>/ViewMaintenanceStatusServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>updateStaffProfileServlet</servlet-name>
+        <servlet-class>controller.updateStaffProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>updateStaffProfileServlet</servlet-name>
+        <url-pattern>/updateStaffProfileServlet</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+
 </web-app>

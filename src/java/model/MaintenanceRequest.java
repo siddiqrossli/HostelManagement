@@ -1,23 +1,46 @@
-// In model/MaintenanceRequest.java
 package model;
 
-import java.util.Date; // Assuming you have this already
+import java.sql.Date; // Using java.sql.Date for direct compatibility with JDBC
 
 public class MaintenanceRequest {
-    private String mainID;
+    private String mainID; // Now String, no mainIDRaw
     private String mainCat;
     private String mainDescription;
-    private Date mainDate; // Using java.util.Date
+    private Date mainDate; // Using java.sql.Date
     private String mainStatus;
-    private String staffID; // Keep if you still need it, though not directly displayed
+    private String staffID; // Reflects your current field name
     private String studentID;
     private String roomID;
 
-    // New fields for staff details
+    // Fields for staff details
     private String staffName;
-    private String staffNumber; // This will map to staffNumber
+    private String staffNumber;
 
-    // Constructors (if any) and existing getters/setters
+    // MISSING FIELD - ADD THIS ONE
+    private String studentName; // <--- ADD THIS FIELD
+
+    public MaintenanceRequest() {
+        // Default constructor
+    }
+
+    // Constructor with all fields (including studentName now)
+    public MaintenanceRequest(String mainID, String mainCat, String mainDescription, Date mainDate, String mainStatus,
+                              String staffID, String studentID, String roomID, String staffName, String staffNumber,
+                              String studentName) { // <--- ADD studentName to constructor
+        this.mainID = mainID;
+        this.mainCat = mainCat;
+        this.mainDescription = mainDescription;
+        this.mainDate = mainDate;
+        this.mainStatus = mainStatus;
+        this.staffID = staffID;
+        this.studentID = studentID;
+        this.roomID = roomID;
+        this.staffName = staffName;
+        this.staffNumber = staffNumber;
+        this.studentName = studentName; // <--- Set studentName in constructor
+    }
+
+    // --- Getters and Setters ---
 
     public String getMainID() {
         return mainID;
@@ -83,7 +106,6 @@ public class MaintenanceRequest {
         this.roomID = roomID;
     }
 
-    // New getters and setters for staff details
     public String getStaffName() {
         return staffName;
     }
@@ -98,5 +120,14 @@ public class MaintenanceRequest {
 
     public void setStaffNumber(String staffNumber) {
         this.staffNumber = staffNumber;
+    }
+
+    // NEW GETTER AND SETTER - ADD THESE ONES
+    public String getStudentName() { // <--- ADD THIS METHOD
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) { // <--- ADD THIS METHOD
+        this.studentName = studentName;
     }
 }
