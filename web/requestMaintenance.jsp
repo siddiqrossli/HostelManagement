@@ -260,7 +260,7 @@
                 <option value="Plumbing Issue" <c:if test="${requestScope.category eq 'Plumbing Issue'}">selected</c:if>>Plumbing Issue</option>
                 <option value="Electrical Issue" <c:if test="${requestScope.category eq 'Electrical Issue'}">selected</c:if>>Electrical Issue</option>
                 <option value="Furniture Damage" <c:if test="${requestScope.category eq 'Furniture Damage'}">selected</c:if>>Furniture Damage</option>
-                <option value="Air-Conditioning" <c:if test="${requestScope.category eq 'Air-Conditioning'}">selected</c:if>>Air-Conditioning</option>
+                <option value="Key-Room Missing" <c:if test="${requestScope.category eq 'Key-Room Missing'}">selected</c:if>>Key-Room Missing</option>
                 <option value="Pest Control" <c:if test="${requestScope.category eq 'Pest Control'}">selected</c:if>>Pest Control</option>
                 <option value="Cleaning Services" <c:if test="${requestScope.category eq 'Cleaning Services'}">selected</c:if>>Cleaning Services</option>
                 <option value="Other" <c:if test="${requestScope.category eq 'Other'}">selected</c:if>>Other</option>

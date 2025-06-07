@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date; // Add this import for java.util.Date
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +25,8 @@ public class ViewMaintenanceStatusServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&useSSL=false";
-    private static final String DB_USERNAME = "farish"; // Your database username
-    private static final String DB_PASSWORD = "kakilangit"; // The password for the 'farish' user
+    private static final String DB_USERNAME = "farish";
+    private static final String DB_PASSWORD = "kakilangit";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,10 +49,13 @@ public class ViewMaintenanceStatusServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(JDBC_URL, DB_USERNAME, DB_PASSWORD);
 
-            String sql = "SELECT mainID, mainCat, mainDescription, mainDate, mainStatus " +
-                         "FROM maintenance " +
-                         "WHERE studentID = ? " +
-                         "ORDER BY mainDate DESC";
+            // Modified SQL query to LEFT JOIN with the staff table
+            String sql = "SELECT m.mainID, m.mainCat, m.mainDescription, m.mainDate, m.mainStatus, " +
+                         "s.staffName, s.staffNumber " + // Select staff details
+                         "FROM maintenance m " +
+                         "LEFT JOIN staff s ON m.staffID = s.staffID " + // Join on staffID
+                         "WHERE m.studentID = ? " +
+                         "ORDER BY m.mainDate DESC";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, studentId);
@@ -64,10 +67,12 @@ public class ViewMaintenanceStatusServlet extends HttpServlet {
                 req.setMainCat(rs.getString("mainCat"));
                 req.setMainDescription(rs.getString("mainDescription"));
 
-                // --- CHANGE IS HERE ---
-                // Get as java.sql.Date (which is a subclass of java.util.Date)
                 java.sql.Date sqlDate = rs.getDate("mainDate");
-                req.setMainDate(sqlDate); // Directly set java.sql.Date to java.util.Date field
+                req.setMainDate(sqlDate);
+
+                // Retrieve staff details and set them in the MaintenanceRequest object
+                req.setStaffName(rs.getString("staffName")); //
+                req.setStaffNumber(rs.getString("staffNumber")); //
 
                 req.setMainStatus(rs.getString("mainStatus"));
                 maintenanceRequests.add(req);

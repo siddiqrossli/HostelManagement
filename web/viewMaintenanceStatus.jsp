@@ -1,207 +1,115 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%-- In viewMaintenanceStatus.jsp --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.MaintenanceRequest" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Maintenance Status</title>
     <style>
+        /* Your existing CSS styles */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f2f5;
+            background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-image: url('img/hostel_background.jpg'); /* Use your background image */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            margin: 0;
+            background-color: #d15656; /* Reddish background */
         }
-
         .container {
-            background-color: rgba(192, 57, 43, 0.9); /* Reddish background with transparency */
-            padding: 30px 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            width: 100%;
-            max-width: 900px; /* Slightly wider for the table */
-            color: white;
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        h1 {
+            background-color: #a83a3a; /* Darker red for the container */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1000px; /* Increased max-width */
+            color: #fff;
             text-align: center;
-            font-size: 36px;
-            margin-bottom: 30px;
-            color: white;
         }
-
-        .header-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+        h2 {
+            color: #fff;
+            margin-bottom: 20px;
         }
-
-        .header-buttons .btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .header-buttons .btn:hover {
-            background-color: white;
-            color: #c0392b;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.15); /* Slightly transparent background for table */
-            border-radius: 10px;
-            overflow: hidden; /* For rounded corners to apply to table */
         }
-
         th, td {
-            padding: 12px 15px;
+            padding: 12px;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
+            border-bottom: 1px solid #c74c4c; /* Lighter red for borders */
+            color: #fff;
         }
-
         th {
-            background-color: rgba(255, 255, 255, 0.25);
-            font-weight: bold;
-            font-size: 18px;
+            background-color: #8f2f2f; /* Even darker red for headers */
         }
-
-        tr:last-child td {
-            border-bottom: none;
+        tr:nth-child(even) {
+            background-color: #9c3636; /* Slightly different background for even rows */
         }
-
-        .no-records {
-            text-align: center;
-            padding: 20px;
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
         .status-pending {
-            color: orange;
+            color: #ffcc00; /* Yellow for pending */
             font-weight: bold;
         }
-        .status-in_progress { /* Using underscore for consistency with potential enum/db values */
-            color: lightblue;
+        .status-in-progress {
+            color: #00bfff; /* Light blue for in progress */
             font-weight: bold;
         }
         .status-completed {
-            color: lightgreen;
+            color: #66ff66; /* Green for completed */
             font-weight: bold;
         }
         .status-rejected {
-            color: #FF6347; /* Tomato */
+            color: #ff6666; /* Red for rejected */
             font-weight: bold;
         }
-
-        .button-group {
-            display: flex;
-            justify-content: center; /* Center the back button */
-            margin-top: 30px;
-        }
-
-        .button-group .btn {
-            background-color: rgba(255, 255, 255, 0.1);
+        .back-button {
+            background-color: #555;
             color: white;
-            border: 1px solid white;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 18px;
             text-decoration: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            text-align: center;
+            margin-top: 30px;
+            display: inline-block;
         }
-
-        .button-group .btn:hover {
-            background-color: white;
-            color: #c0392b;
+        .back-button:hover {
+            background-color: #777;
         }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 0 15px;
-            }
-            h1 {
-                font-size: 28px;
-            }
-            table, thead, tbody, th, td, tr {
-                display: block; /* Make table elements act like block elements */
-            }
-            thead tr {
-                position: absolute;
-                top: -9999px; /* Hide table headers */
-                left: -9999px;
-            }
-            tr {
-                border: 1px solid rgba(255, 255, 255, 0.3);
-                margin-bottom: 10px;
-                border-radius: 8px;
-                overflow: hidden;
-            }
-            td {
-                border: none;
-                position: relative;
-                padding-left: 50%; /* Space for the pseudo-element label */
-                text-align: right;
-            }
-            td:before {
-                content: attr(data-label); /* Use data-label for content */
-                position: absolute;
-                left: 15px;
-                width: calc(50% - 30px);
-                padding-right: 10px;
-                white-space: nowrap;
-                font-weight: bold;
-                text-align: left;
-            }
-            .header-buttons {
-                position: static;
-                text-align: right;
-                margin-bottom: 20px;
-            }
+        .new-request-button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            float: right;
+            margin-bottom: 15px;
+        }
+        .new-request-button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <a href="requestMaintenance.jsp" class="new-request-button">New Request</a>
+        <h2>Maintenance Status</h2>
 
-<div class="container">
-    <div class="header-buttons">
-        <a href="requestMaintenance" class="btn">New Request</a> <%-- Link back to the request form --%>
-    </div>
+        <%
+            List<MaintenanceRequest> maintenanceRequests = (List<MaintenanceRequest>) request.getAttribute("maintenanceRequests");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        %>
 
-    <h1>Maintenance Status</h1>
-
-    <c:if test="${not empty requestScope.message}">
-        <div class="message ${requestScope.messageType == 'success' ? 'success' : 'error'}">
-            ${requestScope.message}
-        </div>
-    </c:if>
-
-    <c:choose>
-        <c:when test="${not empty requestScope.maintenanceRequests}">
+        <% if (maintenanceRequests == null || maintenanceRequests.isEmpty()) { %>
+            <p>No maintenance requests found.</p>
+        <% } else { %>
             <table>
                 <thead>
                     <tr>
@@ -209,36 +117,28 @@
                         <th>Category</th>
                         <th>Description</th>
                         <th>Date</th>
+                        <th>Assigned Staff</th>
+                        <th>Staff Number</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="req" items="${requestScope.maintenanceRequests}">
+                    <% for (MaintenanceRequest req : maintenanceRequests) { %>
                         <tr>
-                            <td data-label="ID">${req.mainID}</td>
-                            <td data-label="Category">${req.mainCat}</td>
-                            <td data-label="Description">${req.mainDescription}</td>
-                            <td data-label="Date"><fmt:formatDate value="${req.mainDate}" pattern="yyyy-MM-dd"/></td>
-                            <td data-label="Status">
-                                <span class="status-${req.mainStatus.toLowerCase().replace(' ', '_')}">
-                                    ${req.mainStatus}
-                                </span>
-                            </td>
+                            <td><%= req.getMainID() %></td>
+                            <td><%= req.getMainCat() %></td>
+                            <td><%= req.getMainDescription() %></td>
+                            <td><%= dateFormat.format(req.getMainDate()) %></td>
+                            <td><%= req.getStaffName() != null ? req.getStaffName() : "N/A" %></td>
+                            <td><%= req.getStaffNumber() != null ? req.getStaffNumber() : "N/A" %></td>
+                            <td><span class="status-<%= req.getMainStatus().toLowerCase().replace(" ", "-") %>"><%= req.getMainStatus() %></span></td>
                         </tr>
-                    </c:forEach>
+                    <% } %>
                 </tbody>
             </table>
-        </c:when>
-        <c:otherwise>
-            <p class="no-records">No maintenance requests found.</p>
-        </c:otherwise>
-    </c:choose>
+        <% } %>
 
-    <div class="button-group">
-        <a href="dashboard.jsp" class="btn">Back to Dashboard</a>
+        <a href="studentDashboard.jsp" class="back-button">Back to Dashboard</a>
     </div>
-
-</div>
-
 </body>
 </html>
