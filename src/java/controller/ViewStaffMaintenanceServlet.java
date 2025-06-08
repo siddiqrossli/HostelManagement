@@ -25,13 +25,13 @@ public class ViewStaffMaintenanceServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("staffID") == null) {
+        if (session == null || session.getAttribute("staffId") == null) {
             // Redirect to staff login page if no session or staffID
             response.sendRedirect("staffLogin.jsp");
             return;
         }
 
-        String staffId = (String) session.getAttribute("staffID");
+        String staffId = (String) session.getAttribute("staffId");
 
         // Transfer any message from session to request scope (for showing after redirect)
         String message = (String) session.getAttribute("message");

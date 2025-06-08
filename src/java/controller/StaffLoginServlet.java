@@ -54,7 +54,7 @@ public class StaffLoginServlet extends HttpServlet {
 
                     if (staffPass.equals(storedPlainPassword)) {
                         HttpSession session = request.getSession();
-                        session.setAttribute("staffID", staffId);
+                        session.setAttribute("staffId", staffId);
                         session.setAttribute("staffName", staffName);
                         session.setAttribute("staffPosition", staffPosition); // Store position in session
 

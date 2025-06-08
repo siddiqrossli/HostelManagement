@@ -138,7 +138,7 @@
             </table>
         <% } %>
 
-        <a href="studentDashboard.jsp" class="back-button">Back to Dashboard</a>
+        <a href="dashboard.jsp" class="back-button">Back to Dashboard</a>
     </div>
 </body>
 </html>

@@ -33,6 +33,15 @@ public class UpdateStaffProfileServlet extends HttpServlet {
 
         String staffId = (String) session.getAttribute("staffId");
         String staffName = request.getParameter("staffName");
+
+// Validate that staffName is not null or empty
+    if (staffName == null || staffName.trim().isEmpty()) {
+        request.setAttribute("message", "Full Name is required!");
+        request.setAttribute("messageType", "error");
+        request.getRequestDispatcher("updateStaffProfile.jsp").forward(request, response);
+        return; // Stop execution
+    }
+        
         String staffNumber = request.getParameter("staffNumber");
         String staffEmail = request.getParameter("staffEmail");
 
