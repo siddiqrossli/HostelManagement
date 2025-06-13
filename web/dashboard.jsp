@@ -33,7 +33,7 @@
     <h1>Welcome, ${sessionScope.studentName}</h1> <%-- Using sessionScope for welcome message --%>
     <ul>
         <li><a href="updateProfile">Update Profile</a></li>
-        <li><a href="changePassword.jsp">Change Password</a></li>
+        <li><a href="changePassword">Change Password</a></li>
         <li><a href="ApplyCollegeServlet">Apply College</a></li>
         <li><a href="requestMaintenance">Request Maintenance</a></li> <%-- Link to servlet --%>
         <li><a href="viewBills.jsp">View Bills</a></li>

@@ -65,7 +65,7 @@ public class ApplyCollegeServlet extends HttpServlet {
                 String status = rs.getString("appealStatus");
 
                 if (status.equalsIgnoreCase("approved")) {
-                    response.sendRedirect("roomBooking.jsp");
+                    response.sendRedirect("RoomBookingServlet");
                     return;
                 } else if (status.equalsIgnoreCase("rejected")) {
                     request.setAttribute("appealResult", "Your appeal was rejected. Please contact the hostel office for more info.");
@@ -110,7 +110,7 @@ public class ApplyCollegeServlet extends HttpServlet {
             request.setAttribute("totalMerit", totalMerit);
 
             if (totalMerit >= 5.5) {
-                response.sendRedirect("roomBooking.jsp");
+                response.sendRedirect("RoomBookingServlet");
             } else {
                 request.getRequestDispatcher("submitAppeal.jsp").forward(request, response);
             }

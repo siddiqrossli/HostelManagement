@@ -16,6 +16,10 @@
         <servlet-name>SubmitAppealServlet</servlet-name>
         <servlet-class>controller.SubmitAppealServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffChangePasswordServlet</servlet-name>
+        <servlet-class>controller.StaffChangePasswordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -135,6 +139,10 @@
     <servlet-mapping>
         <servlet-name>SubmitAppealServlet</servlet-name>
         <url-pattern>/SubmitAppealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffChangePasswordServlet</servlet-name>
+        <url-pattern>/StaffChangePasswordServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

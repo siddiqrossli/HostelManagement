@@ -23,6 +23,9 @@
     <h1>Welcome, <%= session.getAttribute("staffName") %></h1>
     <ul>
         <li><a href="updateStaffProfile">Update Profile</a></li>
+        <li><a href="staffChangePassword">Change Password</a></li>
+        <li><a href="staffList">View Staff</a></li>
+        <li><a href="roomList">View Room</a></li>
         <li><a href="viewStaffMaintenance">View Maintenance Requests</a></li>
         <li><a href="ViewAppealServlet">View Appeal Requests</a></li>
     </ul>
