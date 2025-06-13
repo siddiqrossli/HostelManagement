@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee  http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewAppealServlet</servlet-name>
+        <servlet-class>controller.ViewAppealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateAppealStatusServlet</servlet-name>
+        <servlet-class>controller.UpdateAppealStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SubmitAppealServlet</servlet-name>
+        <servlet-class>controller.SubmitAppealServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>controller.RegisterServlet</servlet-class>
@@ -18,7 +28,6 @@
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>UpdateProfileServlet</servlet-name>
         <servlet-class>controller.UpdateProfileServlet</servlet-class>
@@ -27,7 +36,6 @@
         <servlet-name>UpdateProfileServlet</servlet-name>
         <url-pattern>/UpdateProfileServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ChangePasswordServlet</servlet-name>
         <servlet-class>controller.ChangePasswordServlet</servlet-class>
@@ -36,7 +44,6 @@
         <servlet-name>ChangePasswordServlet</servlet-name>
         <url-pattern>/ChangePasswordServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>RoomBookingServlet</servlet-name>
         <servlet-class>controller.RoomBookingServlet</servlet-class>
@@ -45,7 +52,6 @@
         <servlet-name>RoomBookingServlet</servlet-name>
         <url-pattern>/RoomBookingServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>RequestMaintenanceServlet</servlet-name>
         <servlet-class>controller.RequestMaintenanceServlet</servlet-class>
@@ -54,7 +60,6 @@
         <servlet-name>RequestMaintenanceServlet</servlet-name>
         <url-pattern>/RequestMaintenanceServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ViewBillServlet</servlet-name>
         <servlet-class>controller.ViewBillServlet</servlet-class>
@@ -63,7 +68,6 @@
         <servlet-name>ViewBillServlet</servlet-name>
         <url-pattern>/ViewBillServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>AdminDashboardServlet</servlet-name>
         <servlet-class>controller.AdminDashboardServlet</servlet-class>
@@ -72,7 +76,6 @@
         <servlet-name>AdminDashboardServlet</servlet-name>
         <url-pattern>/AdminDashboardServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ApplyCollegeServlet</servlet-name>
         <servlet-class>controller.ApplyCollegeServlet</servlet-class>
@@ -81,7 +84,6 @@
         <servlet-name>ApplyCollegeServlet</servlet-name>
         <url-pattern>/ApplyCollegeServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>staffRegisterServlet</servlet-name>
         <servlet-class>controller.StaffRegisterServlet</servlet-class>
@@ -90,7 +92,6 @@
         <servlet-name>staffRegisterServlet</servlet-name>
         <url-pattern>/staffRegisterServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>StaffLoginServlet</servlet-name>
         <servlet-class>controller.StaffLoginServlet</servlet-class>
@@ -99,7 +100,6 @@
         <servlet-name>StaffLoginServlet</servlet-name>
         <url-pattern>/StaffLoginServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>controller.LogoutServlet</servlet-class>
@@ -108,7 +108,6 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ViewMaintenanceStatusServlet</servlet-name>
         <servlet-class>controller.ViewMaintenanceStatusServlet</servlet-class>
@@ -117,7 +116,6 @@
         <servlet-name>ViewMaintenanceStatusServlet</servlet-name>
         <url-pattern>/ViewMaintenanceStatusServlet</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>updateStaffProfileServlet</servlet-name>
         <servlet-class>controller.updateStaffProfileServlet</servlet-class>
@@ -126,9 +124,19 @@
         <servlet-name>updateStaffProfileServlet</servlet-name>
         <url-pattern>/updateStaffProfileServlet</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>ViewAppealServlet</servlet-name>
+        <url-pattern>/ViewAppealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateAppealStatusServlet</servlet-name>
+        <url-pattern>/UpdateAppealStatusServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubmitAppealServlet</servlet-name>
+        <url-pattern>/SubmitAppealServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-
 </web-app>

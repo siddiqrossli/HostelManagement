@@ -1,40 +1,29 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    // Check if the student is logged in
-    if (session.getAttribute("studentId") == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-
-    // Retrieve student details from session
-    String studentId = (String) session.getAttribute("studentId");
-%>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Apply College</title>
+    <title>Apply for College</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .info-box { background: white; padding: 20px; border-radius: 10px; width: 50%; margin: auto; box-shadow: 0 0 10px #ccc; }
+        .btn { padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        .btn:hover { background-color: #0056b3; }
+    </style>
 </head>
 <body>
-    <h2>Apply College</h2>
-    
-    <!-- Display student information -->
-    <div>
-        <h3>INFO</h3>
-        <p>Name: <%= session.getAttribute("studentName") %></p>
-        <p>ID: <%= studentId %></p>
-        <p>Phone: <%= session.getAttribute("studentPhone") %></p>
-        <p>Email: <%= session.getAttribute("studentEmail") %></p>
-        <p>Gender: <%= session.getAttribute("studentGender") %></p>
-        <p>Household Income: RM<%= session.getAttribute("studentIncome") %></p>
-    </div>
-    
-    <!-- College application form -->
-    <form action="ApplyCollegeServlet" method="post">
-        <input type="hidden" name="studentId" value="<%= studentId %>">
-        
-        <div>
-            <button type="submit">Apply College</button>
-            <button type="button" onclick="window.location.href='studentDashboard.jsp';">Back</button>
-        </div>
+<div class="info-box">
+    <h2>Student Information</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>ID:</strong> ${studentId}</p>
+    <p><strong>Phone Number:</strong> ${phone}</p>
+    <p><strong>Merit:</strong> ${merit}</p>
+    <hr>
+    <h3>Your merit is below 5.5. Please submit an appeal.</h3>
+    <form action="SubmitAppealServlet" method="post">
+        <label for="appealReason">Appeal Reason:</label><br>
+        <textarea name="appealReason" rows="4" cols="50" required></textarea><br><br>
+        <button type="submit" class="btn">Submit Appeal</button>
     </form>
+</div>
 </body>
 </html>

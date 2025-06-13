@@ -24,6 +24,7 @@
     <ul>
         <li><a href="updateStaffProfile">Update Profile</a></li>
         <li><a href="viewStaffMaintenance">View Maintenance Requests</a></li>
+        <li><a href="ViewAppealServlet">View Appeal Requests</a></li>
     </ul>
 </body>
 </html>

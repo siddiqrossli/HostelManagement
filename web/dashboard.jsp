@@ -34,7 +34,7 @@
     <ul>
         <li><a href="updateProfile">Update Profile</a></li>
         <li><a href="changePassword.jsp">Change Password</a></li>
-        <li><a href="bookRoom.jsp">Book Room</a></li>
+        <li><a href="ApplyCollegeServlet">Apply College</a></li>
         <li><a href="requestMaintenance">Request Maintenance</a></li> <%-- Link to servlet --%>
         <li><a href="viewBills.jsp">View Bills</a></li>
         <li><a href="logout">Logout</a></li>
