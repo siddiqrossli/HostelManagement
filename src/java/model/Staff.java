@@ -1,25 +1,45 @@
 package model;
+
 public class Staff {
-    private String staffId;
-    private String name;
-    private String phone;
-    private String position;
-    private String email;
+    private String staffID;
+    private String staffName;
+    private String staffNumber;
+    private String staffEmail;
+    private String staffPosition;
 
-    public Staff() {}
+    // Getters and setters
+    public String getStaffID() {
+        return staffID;
+    }
+    public void setStaffID(String staffID) {
+        this.staffID = staffID;
+    }
 
-    public String getStaffId() { return staffId; }
-    public void setStaffId(String staffId) { this.staffId = staffId; }
+    public String getStaffName() {
+        return staffName;
+    }
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getStaffNumber() {
+        return staffNumber;
+    }
+    public void setStaffNumber(String staffNumber) {
+        this.staffNumber = staffNumber;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public String getStaffEmail() {
+        return staffEmail;
+    }
+    public void setStaffEmail(String staffEmail) {
+        this.staffEmail = staffEmail;
+    }
 
-    public String getPosition() { return position; }
-    public void setPosition(String position) { this.position = position; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getStaffPosition() {
+        return staffPosition;
+    }
+    public void setStaffPosition(String staffPosition) {
+        this.staffPosition = staffPosition;
+    }
 }

@@ -20,6 +20,14 @@
         <servlet-name>StaffChangePasswordServlet</servlet-name>
         <servlet-class>controller.StaffChangePasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffListServlet</servlet-name>
+        <servlet-class>controller.StaffListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RoomListServlet</servlet-name>
+        <servlet-class>controller.RoomListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -143,6 +151,14 @@
     <servlet-mapping>
         <servlet-name>StaffChangePasswordServlet</servlet-name>
         <url-pattern>/StaffChangePasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffListServlet</servlet-name>
+        <url-pattern>/StaffListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoomListServlet</servlet-name>
+        <url-pattern>/RoomListServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
