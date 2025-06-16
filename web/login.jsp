@@ -1,115 +1,151 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Student Login</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
+            background-color: #fce8e6;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f4f4f4;
+            overflow: auto;
+            padding: 0px;
         }
+
         .login-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-            text-align: center; /* Center content within container */
-        }
-        h1 { /* Added for the main title from the image */
-            font-size: 32px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        h2 { /* Kept for the 'Student Login' subheading */
-            font-size: 24px; /* Adjust size */
-            color: #333;
-            margin-bottom: 25px;
-        }
-        p.welcome-text { /* Added for text like 'Welcome back' */
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #555;
-        }
-        .roles-section { /* Styles for the role selection buttons */
-            margin-bottom: 30px;
-            padding: 15px 0;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-        }
-        .role-button {
-            background-color: rgba(0, 123, 255, 0.1); /* Light blue transparent */
-            border: 1px solid #007bff; /* Blue border */
-            color: #007bff; /* Blue text */
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            flex-direction: column;
-            margin: 0 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .role-button:hover {
-            background-color: #007bff;
-            color: white;
-            transform: translateY(-2px);
-        }
-        .role-button img {
-            width: 40px; /* Size of icons */
-            height: 40px;
-            margin-bottom: 5px;
-            filter: none; /* Keep original icon colors, or use filter: brightness(0) invert(1); if icons are black and need to be white */
-        }
-        .form-group { margin-bottom: 15px; text-align: left; /* Align input labels left */ }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
-        input[type="text"], input[type="password"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        .button-group { text-align: center; margin-top: 25px; }
-        input[type="submit"] {
-            padding: 10px 25px;
-            background-color: #28a745; /* Green for login button */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 17px;
-            transition: background-color 0.3s ease;
-        }
-        input[type="submit"]:hover { background-color: #218838; }
-        .error-message {
-            color: #d8000c;
-            background-color: #ffbaba;
-            border: 1px solid #d8000c;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
+            max-width: 370px;
             text-align: center;
         }
-        .create-account-link {
+
+        h1 {
+            color: #8b0000;
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            color: #8b0000;
+            font-size: 20px;
+            margin: 15px 0 10px;
+        }
+
+        .welcome-text {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .roles-section {
+            margin: 12px 0 20px;
+            border-top: 1px solid #f5c9c9;
+            border-bottom: 1px solid #f5c9c9;
+            padding: 12px 0;
+        }
+
+        .role-button {
+            background-color: #fdf2f1;
+            border: 1px solid #8b0000;
+            color: #8b0000;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+            margin: 0 6px;
+            font-weight: bold;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .role-button:hover {
+            background-color: #8b0000;
+            color: white;
+        }
+
+       .role-button img {
+    width: 25px;
+    height: 25px;
+    margin-bottom: 4px;
+    object-fit: contain;
+         }
+
+        form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
             display: block;
-            margin-top: 20px;
-            font-size: 16px;
-            color: #007bff; /* Blue link */
+            margin-bottom: 4px;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #a51414;
+        }
+
+        .error-message {
+            background-color: #ffd6d6;
+            color: #b30000;
+            border: 1px solid #ffcccc;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .create-account-link {
+            margin-top: 16px;
+            font-size: 13px;
+        }
+
+        .create-account-link a {
+            color: #8b0000;
             text-decoration: none;
         }
-        .create-account-link:hover {
+
+        .create-account-link a:hover {
             text-decoration: underline;
         }
     </style>
@@ -117,25 +153,23 @@
 <body>
 
 <div class="login-container">
-    <h1>Polytechnic Hostel</h1> <%-- Main title --%>
+    <h1>Polytechnic Hostel</h1>
     <p class="welcome-text">Welcome back</p>
     <p class="welcome-text">Please enter your details to sign in as a student.</p>
 
     <div class="roles-section">
-        <p>Roles :</p>
-        <%-- Student Role Button (current page, so it can be a static label or styled for 'active') --%>
-        <a href="login.jsp" class="role-button" style="background-color: #007bff; color: white;">
-            <img src="img/student.png" alt="Student Icon" style="filter: brightness(0) invert(1);"> <%-- Icon will be white on blue bg --%>
+        <p><strong>Roles:</strong></p>
+        <a href="login.jsp" class="role-button" style="background-color: #8b0000; color: white;">
+            <img src="img/student.png" alt="Student Icon" style="filter: brightness(0) invert(1);">
             Student
         </a>
-        <%-- Staff Role Button (links to staff login) --%>
         <a href="staffLogin.jsp" class="role-button">
             <img src="img/staff.png" alt="Staff Icon">
             Staff
         </a>
     </div>
 
-    <h2>Student Login</h2> <%-- Subheading for the form --%>
+    <h2>Student Login</h2>
 
     <c:if test="${not empty requestScope.error}">
         <div class="error-message">
@@ -156,8 +190,10 @@
             <input type="submit" value="Login">
         </div>
     </form>
-    <p class="create-account-link"><a href="register.jsp">Don't have an account? Create Account</a></p>
-    <%-- No need for "Back to Role Selection" here, as the roles are already on this page --%>
+
+    <p class="create-account-link">
+        <a href="register.jsp">Don't have an account? Create Account</a>
+    </p>
 </div>
 
 </body>
