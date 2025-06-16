@@ -6,34 +6,128 @@
         return;
     }
 %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Staff Change Password</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .container { max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="password"] { width: calc(100% - 12px); padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        .button-group { text-align: center; margin-top: 20px; }
-        button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:hover { background-color: #0056b3; }
-        .error-message, .success-message {
-            text-align: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 5px;
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: #fce8e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #8b0000;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            font-size: 15px;
+        }
+
+        .button-group {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #a51616;
+        }
+
+        .message {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
         .error-message {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #8b0000;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        .back-button {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #8b0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: #a51414;
         }
     </style>
 </head>
@@ -43,11 +137,11 @@
     <h2>Change Password</h2>
 
     <c:if test="${not empty error}">
-        <div class="error-message">${error}</div>
+        <div class="message error-message">${error}</div>
     </c:if>
 
     <c:if test="${not empty success}">
-        <div class="success-message">${success}</div>
+        <div class="message success-message">${success}</div>
     </c:if>
 
     <form action="staffChangePassword" method="post">
@@ -67,8 +161,12 @@
             <button type="submit">Change Password</button>
         </div>
     </form>
-    <p style="text-align: center; margin-top: 20px;"><a href="staffDashboard.jsp">Back to Dashboard</a></p>
+
+   <div class="back-button">
+        <a href="staffDashboard.jsp" class="btn-back">Back to Dashboard</a>
+    </div>
 </div>
 
 </body>
 </html>
+`

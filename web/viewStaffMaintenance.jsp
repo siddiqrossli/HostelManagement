@@ -7,28 +7,118 @@
     <meta charset="UTF-8">
     <title>View Staff Maintenance Requests</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        h1 { color: #333; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #007bff; color: white; }
-        .no-records { text-align: center; color: #555; margin-top: 20px; }
-        .error-message { color: red; font-weight: bold; }
-        .success-message { color: green; font-weight: bold; }
-        .update-form select, .update-form button {
-            padding: 5px;
-            margin-right: 5px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: #fce8e6; /* light pink background */
+            padding: 40px 20px;
         }
+
+        h1 {
+            color: #8b0000; /* dark red */
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto 0;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            font-size: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fdf2f1;
+        }
+
+        tr:hover {
+            background-color: #f5d7d5;
+        }
+
+        .no-records {
+            text-align: center;
+            color: #8b0000;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: #b30000;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: #155724;
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px auto;
+            max-width: 600px;
+        }
+
+        .update-form {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .update-form select,
         .update-form button {
-            background-color: #28a745;
+            padding: 8px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .update-form button {
+            background-color: #8b0000;
             color: white;
             border: none;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
+
         .update-form button:hover {
-            background-color: #218838;
+            background-color: #a51414;
+        }
+
+        .back-button {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #8b0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: #a51414;
         }
     </style>
 </head>
@@ -85,6 +175,8 @@
         </c:otherwise>
     </c:choose>
 
-    <p><a href="staffDashboard.jsp">Back to Dashboard</a></p>
+    <div class="back-button">
+        <a href="staffDashboard.jsp" class="btn-back">Back to Dashboard</a>
+    </div>
 </body>
 </html>

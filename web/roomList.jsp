@@ -8,20 +8,80 @@
 <head>
     <title>Room List</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        h2 { text-align: center; color: #333; }
-        .button-group { text-align: center; margin-bottom: 20px; }
-        .button-group form { display: inline; }
-        table { width: 100%; border-collapse: collapse; background: #fff; }
-        th, td { padding: 12px; border: 1px solid #ccc; text-align: center; }
-        th { background-color: #007bff; color: white; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        a.button-link {
-            display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none;
-            border-radius: 5px; margin: 0 10px;
-        }
-        a.button-link:hover { background: #0056b3; }
-    </style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        background-color: #fce8e6; /* soft pink background */
+        padding: 40px 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #8b0000; /* dark red */
+        margin-bottom: 30px;
+    }
+
+    .button-group {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .button-group form {
+        display: inline;
+    }
+
+    .table-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow-x: auto;
+        padding: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: #8b0000; /* deep red */
+        color: #fff;
+    }
+
+    tr:nth-child(even) {
+        background-color: #fdf2f1;
+    }
+
+    tr:hover {
+        background-color: #f5d7d5;
+    }
+
+    a.button-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #8b0000;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 0 10px;
+        transition: background 0.3s ease;
+    }
+
+    a.button-link:hover {
+        background: #a51414;
+    }
+</style>
+
+
 </head>
 <body>
 

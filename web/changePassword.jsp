@@ -1,84 +1,107 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Change Password</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff1f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
             max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         h2 {
             text-align: center;
-            color: #333;
+            color: #8b0000;
+            margin-bottom: 25px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: bold;
+            color: #444;
         }
 
         input[type="password"] {
-            width: calc(100% - 12px);
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            font-size: 15px;
         }
 
         .button-group {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #a51616;
+        }
+
+        .back-link {
             text-align: center;
             margin-top: 20px;
         }
 
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+        .back-link a {
+            color: #8b0000;
+            text-decoration: none;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .back-link a:hover {
+            text-decoration: underline;
         }
 
-        .error-message, .success-message {
+        .success-message, .error-message {
             text-align: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid;
-        }
-
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
         }
 
         .success-message {
             background-color: #d4edda;
             color: #155724;
-            border-color: #c3e6cb;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
@@ -115,7 +138,9 @@
         </div>
     </form>
 
-    <p style="text-align: center; margin-top: 20px;"><a href="dashboard.jsp">Back to Dashboard</a></p>
+    <div class="back-link">
+        <a href="dashboard.jsp">← Back to Dashboard</a>
+    </div>
 </div>
 
 </body>

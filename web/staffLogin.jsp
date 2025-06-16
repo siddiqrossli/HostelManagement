@@ -125,12 +125,12 @@
         <p>Roles :</p>
         <%-- Student Role Button (links to student login) --%>
         <a href="login.jsp" class="role-button">
-            <img src="img/student_icon.png" alt="Student Icon">
+            <img src="img/student.png" alt="Student Icon">
             Student
         </a>
         <%-- Staff Role Button (current page, so styled for 'active') --%>
         <a href="staffLogin.jsp" class="role-button" style="background-color: #007bff; color: white;">
-            <img src="img/staff_icon.png" alt="Staff Icon" style="filter: brightness(0) invert(1);"> <%-- Icon will be white on blue bg --%>
+            <img src="img/staff.png" alt="Staff Icon" style="filter: brightness(0) invert(1);"> <%-- Icon will be white on blue bg --%>
             Staff
         </a>
     </div>
