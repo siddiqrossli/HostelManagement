@@ -5,39 +5,54 @@
     <title>Apply for College</title>
     <style>
         body {
-            font-family: Arial;
-            padding: 20px;
-            background: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff1f5;
+            margin: 0;
+            padding: 40px;
         }
-        .info-box {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 50%;
+        .container {
+            max-width: 700px;
             margin: auto;
-            box-shadow: 0 0 10px #ccc;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
         }
-        .btn {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
+        h2, h3 {
+            color: #8b0000;
+            margin-top: 0;
         }
-        .btn:hover {
-            background-color: #0056b3;
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        label {
+            font-weight: bold;
         }
         textarea {
             width: 100%;
-            padding: 10px;
-            border-radius: 5px;
             border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
             resize: vertical;
+            font-size: 14px;
+        }
+        .btn {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #600000;
         }
     </style>
 </head>
 <body>
-    <div class="info-box">
+    <div class="container">
         <h2>Student Information</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>ID:</strong> ${studentId}</p>
