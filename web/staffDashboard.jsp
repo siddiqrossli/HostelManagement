@@ -105,7 +105,7 @@
 <body>
 
 <div class="header">
-    <img src="img/logo.png" alt="Polytechnic Hostel Logo">
+    <img src="logo.png" alt="Polytechnic Hostel Logo">
     <form action="staffLogout.jsp" method="post">
         <button type="submit" class="logout-btn">Log Out</button>
     </form>
