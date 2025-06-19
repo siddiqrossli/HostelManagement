@@ -1,95 +1,265 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Change Password</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Password - Polytechnic Hostel</title>
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
+        /* Base Styles */
+        :root {
+            --primary: #a94442;
+            --primary-dark: #8c3a3a;
+            --primary-light: rgba(169, 68, 66, 0.1);
+            --secondary: #3C91E6;
+            --light: #F9F9F9;
+            --grey: #eee;
+            --dark-grey: #AAAAAA;
+            --dark: #342E37;
+            --white: #ffffff;
+            --black: #000000;
+        }
+
+        * {
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #fff1f5;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            background-image: url('img/background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            background-color: rgba(249, 249, 249, 0.9);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            min-height: 100vh;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .container {
-            background-color: #ffffff;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 500px;
+        .logo {
+            cursor: pointer;
+            transition: transform 0.3s;
         }
 
-        h2 {
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logout-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+        }
+
+        .student-card {
             text-align: center;
-            color: #8b0000;
-            margin-bottom: 25px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--grey);
+            margin-bottom: 20px;
         }
 
-        .form-group {
-            margin-bottom: 18px;
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--primary);
         }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-            color: #444;
+        .student-card h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--primary);
         }
 
-        input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            font-size: 15px;
+        .student-card p {
+            font-size: 14px;
+            color: var(--dark-grey);
         }
 
         .button-group {
-            margin-top: 25px;
-            text-align: center;
-        }
-
-        button {
-            padding: 12px 25px;
-            background-color: #8b0000;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #a51616;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back-link a {
-            color: #8b0000;
-            text-decoration: none;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        .success-message, .error-message {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             margin-bottom: 20px;
+        }
+
+        .dashboard-button {
+            background-color: rgba(169, 68, 66, 0.1);
             padding: 12px;
             border-radius: 8px;
-            font-size: 14px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dashboard-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .dashboard-button i {
+            font-size: 20px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            text-align: center;
+            padding-top: 20px;
+            font-size: 12px;
+            color: var(--dark-grey);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+        }
+
+        .container {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1500px;
+            height: 100%;
+            max-height: 825px;
+            
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--grey);
+            font-size: 15px;
+            color: var(--dark);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: var(--white);
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
         .success-message {
@@ -98,50 +268,192 @@
             border: 1px solid #c3e6cb;
         }
 
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .button-bar {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-back {
+            background-color: var(--light);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-back:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        /* Notice Panel Styles */
+        .notice-panel {
+            width: 280px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .notice-panel h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--grey);
+        }
+
+        .notice-list {
+            list-style-type: none;
+        }
+
+        .notice-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--grey);
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .notice-list li:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            .sidebar, .notice-panel {
+                width: 100%;
+            }
+            .sidebar {
+                order: 1;
+            }
+            .main-content {
+                order: 2;
+            }
+            .notice-panel {
+                order: 3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 15px;
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>Change Password</h2>
-
-    <!-- Success message -->
-    <c:if test="${not empty success}">
-        <div class="success-message">${success}</div>
-    </c:if>
-
-    <!-- Error message -->
-    <c:if test="${not empty error}">
-        <div class="error-message">${error}</div>
-    </c:if>
-
-    <form action="changePassword" method="post">
-        <div class="form-group">
-            <label for="oldPassword">Old Password:</label>
-            <input type="password" name="oldPassword" id="oldPassword" required />
+    <header>
+        <div class="logo" onclick="window.location.href='dashboard.jsp'">
+            <img src="img/logo.png.png" alt="Polytechnic Hostel Logo">
         </div>
-        <div class="form-group">
-            <label for="newPassword">New Password:</label>
-            <input type="password" name="newPassword" id="newPassword" required />
-        </div>
-        <div class="form-group">
-            <label for="confirmNewPassword">Confirm New Password:</label>
-            <input type="password" name="confirmNewPassword" id="confirmNewPassword" required />
-        </div>
-        <div class="button-group">
-            <button type="submit">Change Password</button>
-        </div>
-    </form>
+        <nav>
+            <button class="logout-btn" onclick="window.location.href='logout'">Log Out</button>
+        </nav>
+    </header>
 
-    <div class="back-link">
-        <a href="dashboard.jsp">← Back to Dashboard</a>
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="student-card">
+                <img src="img/student.png" alt="Student Photo" class="profile-pic"/>
+                <h3>${sessionScope.studName}</h3>
+                <p>${sessionScope.studentId}<br/>Student</p>
+            </div>
+            <div class="button-group">
+                <a href="ApplyCollegeServlet" class="dashboard-button">
+                    <i class='bx bxs-school'></i> Apply College
+                </a>
+                <a href="changePassword" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
+                    <i class='bx bxs-wrench'></i> Change Password
+                </a>
+                <a href="requestMaintenance" class="dashboard-button">
+                    <i class='bx bxs-wrench'></i> Request Maintenance
+                </a>
+                <a href="updateProfile" class="dashboard-button">
+                    <i class='bx bxs-user'></i> Update Profile
+                </a>
+                <a href="viewBills.jsp" class="dashboard-button">
+                    <i class='bx bxs-credit-card'></i> Bills
+                </a>
+            </div>
+            <footer class="sidebar-footer">
+                <small>&copy; 2023 Polytechnic Hostel</small>
+            </footer>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="top-bar">
+                    <h2>Change Password</h2>
+                </div>
+
+                <c:if test="${not empty success}">
+                    <div class="message success-message">${success}</div>
+                </c:if>
+
+                <c:if test="${not empty error}">
+                    <div class="message error-message">${error}</div>
+                </c:if>
+
+                <form action="changePassword" method="post">
+                    <div class="form-group">
+                        <label for="oldPassword">Old Password</label>
+                        <input type="password" name="oldPassword" id="oldPassword" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" name="newPassword" id="newPassword" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirm New Password</label>
+                        <input type="password" name="confirmNewPassword" id="confirmNewPassword" required />
+                    </div>
+
+                    <button type="submit" class="btn-submit">Change Password</button>
+                </form>
+
+                
+            </div>
+        </main>
+
+        <!-- Right Notice Panel -->
+        <aside class="notice-panel">
+            <h2>Notices</h2>
+            <ul class="notice-list">
+                <c:forEach items="${notices}" var="notice">
+                    <li>${notice.name} - ${notice.date}</li>
+                </c:forEach>
+            </ul>
+        </aside>
     </div>
-</div>
-
 </body>
 </html>

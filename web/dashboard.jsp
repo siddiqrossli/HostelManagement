@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
 <%
     // Debug prints
     HttpSession currentDashboardSession = request.getSession(false);
@@ -16,11 +17,15 @@
     System.out.println("--------------------------");
 %>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <title>Student Dashboard - Polytechnic Hostel</title>
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -370,7 +375,7 @@
 <body>
     <header>
         <div class="logo" onclick="window.location.href='dashboard.jsp'">
-            <img src="img/logo.png" alt="Polytechnic Hostel Logo">
+            <img src="img/logo.png.png" alt="Polytechnic Hostel Logo">
         </div>
         <nav>
             <button class="logout-btn" onclick="window.location.href='logout'">Log Out</button>
@@ -437,14 +442,18 @@
                     </div>
                     <div class="info-box">
                         <h2>Merits</h2>
-                        <img src="img/merit-chart.png" alt="Merit Chart" class="merit-chart"/>
+                        <canvas id="meritChart" width="180" height="180"></canvas>
+                        <div style="text-align: center; font-weight: bold;">
+                            Total: ${sessionScope.totalMerit}
+                        </div>
                     </div>
+
                 </div>
                 <div class="activities-box">
                     <h2>Activities Joined</h2>
                     <ul>
                         <c:forEach items="${sessionScope.activities}" var="activity">
-                            <li>${activity}</li>
+                        <li>${activity}</li>
                         </c:forEach>
                     </ul>
                 </div>
@@ -452,11 +461,21 @@
 
             <section class="room-info-box">
                 <h2>Room Info</h2>
-                <c:if test="${not empty sessionScope.roomBlock}">
-                    <p>Block: ${sessionScope.roomBlock}</p>
+                <c:if test="${not empty sessionScope.roomID}">
+                    <%
+                        String roomID = (String) session.getAttribute("roomID");
+                        String Block = "Unknown";
+                        if (roomID != null) {
+                        if (roomID.substring(0, 2).equals("TF"))
+                            Block = "Tun Fatimah";
+                        else if (roomID.substring(0, 2).equals("HT"))
+                            Block = "Hang Tuah";
+                            }
+                    %>
+                    <p>Block: <%=Block%> </p>
                 </c:if>
-                <c:if test="${not empty sessionScope.roomNumber}">
-                    <p>Room Number: ${sessionScope.roomNumber}</p>
+                <c:if test="${not empty sessionScope.roomID}">
+                    <p>Room Number: ${sessionScope.roomID}</p>
                 </c:if>
                 <c:if test="${not empty sessionScope.roomType}">
                     <p>Room Type: ${sessionScope.roomType}</p>
@@ -469,13 +488,59 @@
 
         <!-- Right Notice Panel -->
         <aside class="notice-panel">
-            <h2>Notices</h2>
-            <ul class="notice-list">
-                <c:forEach items="${notices}" var="notice">
-                    <li>${notice.title} - ${notice.date}</li>
-                </c:forEach>
-            </ul>
-        </aside>
+    <h2>Notices</h2>
+    <ul class="notice-list">
+        <c:forEach items="${notices}" var="notice">
+            <li>${notice.name} - ${notice.date}</li>
+        </c:forEach>
+    </ul>
+</aside>
     </div>
+                        
+    <script>
+        const labels = [];
+        const data = [];
+
+        <c:forEach var="entry" items="${sessionScope.meritMap}">
+            labels.push("${entry.key}");
+            data.push(${entry.value});
+        </c:forEach>
+
+    const ctx = document.getElementById('meritChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Merit Points',
+                data: data,
+                backgroundColor: [
+                    '#FFCDD2', // lightest red
+                    '#EF9A9A',
+                    '#E57373',
+                    '#EF5350',
+                    '#F44336', // standard red
+                    '#D32F2F',
+                    '#C62828', // dark red
+                    '#B71C1C'  // darkest red
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false, // <--- TURN OFF RESPONSIVENESS
+            maintainAspectRatio: false, // <--- ALLOW CUSTOM SIZE
+            cutout: '70%', // Donut-style
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                },
+            },
+            
+        }
+    });
+</script>
+
 </body>
 </html>

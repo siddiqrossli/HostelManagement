@@ -1,26 +1,71 @@
-package model;
+// Assuming your Bill.java looks something like this:
+package model; // Ensure this matches your actual package
 
 public class Bill {
-    private String billId;
-    private String studentId;
-    private String date;
-    private double amount;
-    private String status;
+    private int billNo; // The primary key, auto-incremented by DB (still exists)
+    private String billName;
+    private double billAmount;
+    private String paymentStatus;
+    private String studentID;
+    private int billSequencePerStudent; // NEW FIELD FOR STUDENT-SPECIFIC BILL NUMBER
 
-    public Bill() {}
+    // Constructor (update to include the new field)
+    public Bill(int billNo, String billName, double billAmount, String paymentStatus, String studentID, int billSequencePerStudent) {
+        this.billNo = billNo;
+        this.billName = billName;
+        this.billAmount = billAmount;
+        this.paymentStatus = paymentStatus;
+        this.studentID = studentID;
+        this.billSequencePerStudent = billSequencePerStudent; // Initialize new field
+    }
 
-    public String getBillId() { return billId; }
-    public void setBillId(String billId) { this.billId = billId; }
+    // Getters and Setters for all fields
+    public int getBillNo() {
+        return billNo;
+    }
 
-    public String getStudentId() { return studentId; }
-    public void setStudentId(String studentId) { this.studentId = studentId; }
+    public void setBillNo(int billNo) {
+        this.billNo = billNo;
+    }
 
-    public String getDate() { return date; }
-    public void setDate(String date) { this.date = date; }
+    public String getBillName() {
+        return billName;
+    }
 
-    public double getAmount() { return amount; }
-    public void setAmount(double amount) { this.amount = amount; }
+    public void setBillName(String billName) {
+        this.billName = billName;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public double getBillAmount() {
+        return billAmount;
+    }
+
+    public void setBillAmount(double billAmount) {
+        this.billAmount = billAmount;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getStudentID() {
+        return studentID;
+    }
+
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
+    }
+
+    // NEW GETTER AND SETTER
+    public int getBillSequencePerStudent() {
+        return billSequencePerStudent;
+    }
+
+    public void setBillSequencePerStudent(int billSequencePerStudent) {
+        this.billSequencePerStudent = billSequencePerStudent;
+    }
 }

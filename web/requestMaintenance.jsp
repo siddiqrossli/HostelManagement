@@ -5,278 +5,487 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Request Maintenance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Maintenance - Polytechnic Hostel</title>
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Base Styles */
+        :root {
+            --primary: #a94442;
+            --primary-dark: #8c3a3a;
+            --primary-light: rgba(169, 68, 66, 0.1);
+            --secondary: #3C91E6;
+            --light: #F9F9F9;
+            --grey: #eee;
+            --dark-grey: #AAAAAA;
+            --dark: #342E37;
+            --white: #ffffff;
+            --black: #000000;
+        }
+
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-image: url('img/hostel_background.jpg'); /* Use your background image */
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            background-image: url('img/background.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            background-blend-mode: overlay;
+            background-color: rgba(249, 249, 249, 0.9);
         }
 
-        .container {
-            background-color: rgba(192, 57, 43, 0.9); /* Reddish background with transparency */
-            padding: 30px 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            width: 100%;
-            max-width: 800px;
-            color: white;
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 36px;
-            margin-bottom: 30px;
-            color: white;
-        }
-
-        .header-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        .header-buttons .btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid white;
-            padding: 8px 15px;
-            border-radius: 5px;
+        a {
             text-decoration: none;
-            font-size: 14px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            color: inherit;
         }
 
-        .header-buttons .btn:hover {
-            background-color: white;
-            color: #c0392b;
-        }
-
-        .info-box, .form-section {
-            background-color: rgba(255, 255, 255, 0.15);
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        .info-box h2 {
-            font-size: 24px;
-            margin-top: 0;
-            margin-bottom: 20px;
-            text-align: center;
-            color: white;
-        }
-
-        .info-item {
+        /* Header Styles */
+        header {
+            background-color: var(--white);
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 18px;
+            align-items: center;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .info-item span:first-child {
-            font-weight: bold;
-            flex-basis: 30%;
-            text-align: left;
+        .logo {
+            cursor: pointer;
+            transition: transform 0.3s;
         }
 
-        .info-item span:last-child {
-            flex-basis: 65%;
-            text-align: right;
+        .logo:hover {
+            transform: scale(1.05);
         }
 
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
+        .logo img {
+            height: 40px;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .form-group select,
-        .form-group textarea {
-            width: calc(100% - 20px);
-            padding: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        .logout-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
             border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-            resize: vertical;
-            min-height: 100px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
         }
 
-        .form-group select option {
-            background-color: #c0392b; /* Ensure options are readable */
-            color: white;
+        .logout-btn:hover {
+            background-color: var(--primary-dark);
         }
 
-        .form-group select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="%23FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 20px;
-            padding-right: 30px;
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
         }
 
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+        }
+
+        .student-card {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--grey);
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--primary);
+        }
+
+        .student-card h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .student-card p {
+            font-size: 14px;
+            color: var(--dark-grey);
+        }
 
         .button-group {
             display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .button-group .btn {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid white;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            text-decoration: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            flex-grow: 1;
-            margin: 0 10px;
-            text-align: center;
-        }
-
-        .button-group .btn:hover {
-            background-color: white;
-            color: #c0392b;
-        }
-
-        /* Error/Success message styles */
-        .message {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
+            flex-direction: column;
+            gap: 10px;
             margin-bottom: 20px;
+        }
+
+        .dashboard-button {
+            background-color: rgba(169, 68, 66, 0.1);
+            padding: 12px;
+            border-radius: 8px;
             text-align: center;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dashboard-button:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .dashboard-button i {
+            font-size: 20px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            text-align: center;
+            padding-top: 20px;
+            font-size: 12px;
+            color: var(--dark-grey);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: left;
+            align-items: flex-start;
+        }
+
+        .container {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1500px;
+            height: 825px;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header-row h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .status-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .status-btn:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.03);
+        }
+
+        .info-box {
+            margin-bottom: 25px;
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--grey);
+        }
+
+        .info-item {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .info-item span {
             font-weight: bold;
         }
-        .error {
-            background-color: rgba(255, 0, 0, 0.3);
-            border: 1px solid red;
-        }
-        .success {
-            background-color: rgba(0, 255, 0, 0.3);
-            border: 1px solid green;
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--dark);
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-                margin: 0 15px;
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--grey);
+            background-color: var(--white);
+            resize: vertical;
+        }
+
+        textarea::placeholder {
+            color: var(--dark-grey);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .btn-group a,
+        .btn-group button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .btn-back {
+            background-color: var(--light);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-back:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .message {
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            background-color: #ffe5e5;
+            color: #a94442;
+            border: 1px solid #a94442;
+        }
+
+        .success {
+            background-color: #e5ffe5;
+            color: #3c763d;
+            border: 1px solid #3c763d;
+        }
+
+        /* Notice Panel Styles */
+        .notice-panel {
+            width: 280px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .notice-panel h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--grey);
+        }
+
+        .notice-list {
+            list-style-type: none;
+        }
+
+        .notice-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--grey);
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .notice-list li:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                flex-direction: column;
             }
-            h1 {
-                font-size: 28px;
+            .sidebar, .notice-panel {
+                width: 100%;
             }
-            .info-item {
+            .sidebar {
+                order: 1;
+            }
+            .main-content {
+                order: 2;
+            }
+            .notice-panel {
+                order: 3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 15px;
+            }
+            .main-content {
+                padding: 15px;
+            }
+            .header-row {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 10px;
             }
-            .info-item span:first-child {
-                margin-bottom: 5px;
-                flex-basis: auto;
-            }
-            .info-item span:last-child {
-                text-align: left;
-                flex-basis: auto;
-            }
-            .button-group {
+            .btn-group {
                 flex-direction: column;
-            }
-            .button-group .btn {
-                margin: 10px 0;
-            }
-            .header-buttons {
-                position: static;
-                text-align: right;
-                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="logo" onclick="window.location.href='dashboard.jsp'">
+            <img src="img/logo.png.png" alt="Polytechnic Hostel Logo">
+        </div>
+        <nav>
+            <button class="logout-btn" onclick="window.location.href='logout'">Log Out</button>
+        </nav>
+    </header>
 
-<div class="container">
-    <div class="header-buttons">
-        <a href="viewMaintenanceStatus" class="btn">View Status</a>
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="student-card">
+                <img src="img/student.png" alt="Student Photo" class="profile-pic"/>
+                <h3>${sessionScope.studName}</h3>
+                <p>${sessionScope.studentId}<br/>Student</p>
+            </div>
+            <div class="button-group">
+                <a href="ApplyCollegeServlet" class="dashboard-button">
+                    <i class='bx bxs-school'></i> Apply College
+                </a>
+                <a href="changePassword" class="dashboard-button">
+                    <i class='bx bxs-wrench'></i> Change Password
+                </a>
+                <a href="requestMaintenance" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
+                    <i class='bx bxs-wrench'></i> Request Maintenance
+                </a>
+                <a href="updateProfile" class="dashboard-button">
+                    <i class='bx bxs-user'></i> Update Profile
+                </a>
+                <a href="viewBills.jsp" class="dashboard-button">
+                    <i class='bx bxs-credit-card'></i> Bills
+                </a>
+            </div>
+            <footer class="sidebar-footer">
+                <small>&copy; 2023 Polytechnic Hostel</small>
+            </footer>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="header-row">
+                    <h1>Request Maintenance</h1>
+                    <a href="viewMaintenanceStatus" class="status-btn">View Status</a>
+                </div>
+
+                <c:if test="${not empty requestScope.message}">
+                    <div class="message ${requestScope.messageType == 'success' ? 'success' : 'error'}">
+                        ${requestScope.message}
+                    </div>
+                </c:if>
+
+                <div class="info-box">
+                    <div class="info-item"><span>Name:</span> ${sessionScope.studName}</div>
+                    <div class="info-item"><span>ID:</span> ${requestScope.studentId}</div>
+                    <div class="info-item"><span>Phone:</span> ${requestScope.phoneNumber}</div>
+                    <div class="info-item"><span>Room:</span> ${requestScope.roomNumber}</div>
+                </div>
+
+                <form action="requestMaintenance" method="post">
+                    <label for="category">Issue Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">-- Select --</option>
+                        <option value="Plumbing Issue" <c:if test="${requestScope.category eq 'Plumbing Issue'}">selected</c:if>>Plumbing Issue</option>
+                        <option value="Electrical Issue" <c:if test="${requestScope.category eq 'Electrical Issue'}">selected</c:if>>Electrical Issue</option>
+                        <option value="Furniture Damage" <c:if test="${requestScope.category eq 'Furniture Damage'}">selected</c:if>>Furniture Damage</option>
+                        <option value="Key-Room Missing" <c:if test="${requestScope.category eq 'Key-Room Missing'}">selected</c:if>>Key-Room Missing</option>
+                        <option value="Pest Control" <c:if test="${requestScope.category eq 'Pest Control'}">selected</c:if>>Pest Control</option>
+                        <option value="Cleaning Services" <c:if test="${requestScope.category eq 'Cleaning Services'}">selected</c:if>>Cleaning Services</option>
+                        <option value="Other" <c:if test="${requestScope.category eq 'Other'}">selected</c:if>>Other</option>
+                    </select>
+
+                    <label for="details">Maintenance Details</label>
+                    <textarea id="details" name="details" rows="5" placeholder="Describe the issue..." required>${requestScope.details}</textarea>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn-submit">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Right Notice Panel -->
+        <aside class="notice-panel">
+            <h2>Notices</h2>
+            <ul class="notice-list">
+                <c:forEach items="${notices}" var="notice">
+                    <li>${notice.name} - ${notice.date}</li>
+                </c:forEach>
+            </ul>
+        </aside>
     </div>
-
-    <h1>Request Maintenance</h1>
-
-    <%-- Display success or error messages --%>
-    <c:if test="${not empty requestScope.message}">
-        <div class="message ${requestScope.messageType == 'success' ? 'success' : 'error'}">
-            ${requestScope.message}
-        </div>
-    </c:if>
-
-    <div class="info-box">
-        <h2>INFO</h2>
-        <div class="info-item">
-            <span>Name:</span> <span>${requestScope.studentName}</span>
-        </div>
-        <div class="info-item">
-            <span>ID:</span> <span>${requestScope.studentId}</span>
-        </div>
-        <div class="info-item">
-            <span>Phone Number:</span> <span>${requestScope.phoneNumber}</span>
-        </div>
-        <div class="info-item">
-            <span>Room:</span> <span>${requestScope.roomNumber}</span>
-        </div>
-    </div>
-
-    <form action="requestMaintenance" method="post" class="form-section">
-        <div class="form-group">
-            <label for="category">Select Issue Category:</label>
-            <select id="category" name="category" required>
-                <option value="" <c:if test="${empty requestScope.category}">selected</c:if>>-- Select --</option>
-                <option value="Plumbing Issue" <c:if test="${requestScope.category eq 'Plumbing Issue'}">selected</c:if>>Plumbing Issue</option>
-                <option value="Electrical Issue" <c:if test="${requestScope.category eq 'Electrical Issue'}">selected</c:if>>Electrical Issue</option>
-                <option value="Furniture Damage" <c:if test="${requestScope.category eq 'Furniture Damage'}">selected</c:if>>Furniture Damage</option>
-                <option value="Key-Room Missing" <c:if test="${requestScope.category eq 'Key-Room Missing'}">selected</c:if>>Key-Room Missing</option>
-                <option value="Pest Control" <c:if test="${requestScope.category eq 'Pest Control'}">selected</c:if>>Pest Control</option>
-                <option value="Cleaning Services" <c:if test="${requestScope.category eq 'Cleaning Services'}">selected</c:if>>Cleaning Services</option>
-                <option value="Other" <c:if test="${requestScope.category eq 'Other'}">selected</c:if>>Other</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="details">Maintenance details:</label>
-            <textarea id="details" name="details" rows="5" placeholder="Describe the issue in detail..." required>${requestScope.details}</textarea>
-        </div>
-
-        <div class="button-group">
-            <a href="dashboard.jsp" class="btn">Back</a>
-            <button type="submit" class="btn">Submit Report</button>
-        </div>
-    </form>
-</div>
-
 </body>
 </html>

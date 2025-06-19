@@ -22,6 +22,7 @@ public class ApplyCollegeServlet extends HttpServlet {
         }
 
         String studentId = (String) session.getAttribute("studentId");
+        
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -56,19 +57,22 @@ public class ApplyCollegeServlet extends HttpServlet {
 
 
             // 1. Check if student has submitted an appeal
-            String appealSql = "SELECT appealStatus FROM student_appeal WHERE studentID = ? ORDER BY appealDate DESC LIMIT 1";
+            String appealSql = "SELECT appealStatus,appealID FROM student_appeal WHERE studentID = ? ORDER BY appealDate DESC LIMIT 1";
             pstmt = conn.prepareStatement(appealSql);
             pstmt.setString(1, studentId);
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 String status = rs.getString("appealStatus");
+                String appealID = rs.getString("appealID");
+                session.setAttribute("appealID", appealID);
 
                 if (status.equalsIgnoreCase("approved")) {
                     response.sendRedirect("RoomBookingServlet");
                     return;
                 } else if (status.equalsIgnoreCase("rejected")) {
                     request.setAttribute("appealResult", "Your appeal was rejected. Please contact the hostel office for more info.");
+                    
                     request.getRequestDispatcher("appealResult.jsp").forward(request, response);
                     return;
                 } else if (status.equalsIgnoreCase("pending")) {
