@@ -1,234 +1,311 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-    Optional: You might want to add a login check here if this page
-    should only be accessible after login, or if the "Logout" button
-    should only appear when logged in. For a landing page, it's often
-    public.
---%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Polytechnic Hostel</title>
-    <%-- Link to external CSS file (recommended) --%>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - Polytechnic Hostel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Six+Caps&display=swap" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    /* BASE STYLES */
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+    }
 
-    <%-- Or, if you prefer to embed the CSS directly for this page: --%>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f2f5; /* A light background */
-            line-height: 1.6;
-            color: #333;
-        }
+    *,
+    *:before,
+    *:after {
+      box-sizing: border-box;
+      position: relative;
+    }
 
-        header {
-            background-color: #2c3e50; /* Dark blue/gray header */
-            color: white;
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            position: relative; /* For z-index to ensure it's on top */
-            z-index: 100;
-        }
+    /* CONTAINER ANIMATION */
+    .container {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        .logo img {
-            height: 50px; /* Adjust as needed */
-        }
+    /* MAIN CONTENT STYLES */
+    main {
+      background: rgba(169, 68, 66, 0.1);
+      border: 2px solid #a94442;
+      padding: 3rem;
+      max-width: 100%;
+      width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 2rem;
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      animation: scroll-content 8s linear infinite;
+    }
 
-        .logout-btn {
-            background-color: #e74c3c; /* Red button */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
+    @keyframes scroll-content {
+      0% {
+        transform: translateY(100vh) translateZ(-200px) rotateY(10deg);
+        opacity: 0;
+      }
+      5% {
+        transform: translateY(80vh) translateZ(-200px) rotateY(10deg);
+        opacity: 1;
+      }
+      95% {
+        transform: translateY(-180%) translateZ(-100px) rotateY(-10deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-200%) translateZ(-100px) rotateY(-10deg);
+        opacity: 0;
+      }
+    }
 
-        .logout-btn:hover {
-            background-color: #c0392b;
-        }
+    main > * {
+      grid-column: 1 / -1;
+    }
 
-        .background {
-            background-image: url('img/hostel_bg.jpg'); /* Assuming a background image */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed; /* Makes the background scroll with the content */
-            min-height: calc(100vh - 80px); /* Adjust based on header height */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 50px 0; /* Vertical padding */
-        }
+    section {
+      grid-column: auto;
+    }
 
-        .box-container {
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
-            border-radius: 10px;
-            padding: 40px;
-            margin: 20px 5%; /* Horizontal margin for responsiveness */
-            max-width: 900px; /* Max width for content */
-            color: white;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex; /* Make it a flex container */
-            flex-direction: column; /* Stack children vertically */
-            align-items: center; /* Center items horizontally within the box */
-        }
+    /* TYPOGRAPHY */
+    h1 {
+      font-family: 'Six Caps', sans-serif;
+      font-size: 4rem;
+      line-height: 1.2;
+      margin: 1rem 0;
+      color: #fff;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
 
-        h1 {
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+    h2 {
+      font-size: 2rem;
+      margin: 1.5rem 0 1rem;
+      color: #a94442;
+    }
 
-        h3 {
-            margin-top: 30px;
-            color: #ecf0f1; /* Lighter color for headings */
-            font-size: 24px;
-        }
+    h2.subheader {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
 
-        p {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 15px;
-        }
+    p {
+      line-height: 1.8;
+      margin: 1rem 0;
+      color: rgba(255, 255, 255, 0.8);
+    }
 
-        ul {
-            list-style: none; /* Remove default bullet points */
-            padding: 0;
-            margin: 10px 0 0 0;
-            text-align: left; /* Align list items to the left */
-            max-width: 700px; /* Limit list width */
-        }
+    /* IMAGES */
+    img {
+      max-width: 100%;
+      display: block;
+      transform-style: preserve-3d;
+      animation: image-pop 8s linear infinite;
+    }
 
-        ul li {
-            margin-bottom: 10px;
-            font-size: 18px;
-            line-height: 1.6;
-        }
+    @keyframes image-pop {
+      0%, 100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0;
+      }
+      10%, 90% {
+        transform: translate3d(0, 0, 60px);
+        opacity: 1;
+      }
+    }
 
-        ul li:before {
-            content: '• '; /* Custom bullet point */
-            color: #3498db; /* Blue color for bullets */
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1em;
-        }
-        
-        .contact-info {
-            margin-top: 30px;
-            font-size: 18px;
-        }
+    /* CALLOUT SECTION */
+    .callout {
+      text-align: center;
+      background-color: #a94442;
+      padding: 2rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+    }
 
-        .contact-info a {
-            color: #3498db; /* Blue link color */
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+    .callout h3 {
+      font-size: 1.8rem;
+      margin-top: 0;
+      color: #fff;
+    }
 
-        .contact-info a:hover {
-            color: #2980b9;
-        }
+    .callout p {
+      color: rgba(255, 255, 255, 0.9);
+    }
 
-        .image-gallery {
-            display: flex;
-            justify-content: center;
-            gap: 20px; /* Space between images */
-            margin-top: 50px; /* Space above image gallery */
-            flex-wrap: wrap; /* Allow images to wrap on smaller screens */
-        }
+    /* MISSION ITEMS */
+    .mission-list {
+      list-style-type: none;
+      padding: 0;
+    }
 
-        .image-gallery img {
-            width: 48%; /* Slightly less than 50% to account for gap */
-            max-width: 400px; /* Max width for individual images */
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-        }
+    .mission-list li {
+      background: rgba(169, 68, 66, 0.2);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid #a94442;
+    }
 
-        .image-gallery img:hover {
-            transform: scale(1.03); /* Slightly enlarge on hover */
-        }
+    /* CONTACT SECTION */
+    .contact-info {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #a94442;
+    }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 36px;
-            }
-            h3 {
-                font-size: 20px;
-            }
-            p, ul li {
-                font-size: 16px;
-            }
-            .image-gallery {
-                flex-direction: column; /* Stack images vertically */
-                align-items: center;
-            }
-            .image-gallery img {
-                width: 90%; /* Full width on small screens */
-            }
-        }
-    </style>
+    .contact-info p {
+      margin: 0.5rem 0;
+    }
+
+    /* ACTION BUTTONS */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 2rem 0;
+      padding-bottom: 3rem;
+    }
+
+    .action-btn {
+      padding: 12px 24px;
+      background-color: #a94442;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-btn:hover {
+      background-color: #8c3a3a;
+      transform: translateY(-2px);
+    }
+
+    /* RESPONSIVE ADJUSTMENTS */
+    @media (max-width: 768px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+      }
+      
+      h1 {
+        font-size: 3rem;
+      }
+      
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        <img src="img/logo.png" alt="Polytechnic Logo"> <%-- Removed extra .png --%>
+<div class="container">
+  <main>
+    <header>
+      <h2 class="subheader">— Polytechnic Hostel</h2>
+      <h1>WELCOME TO THE OFFICIAL RESIDENCE OF POLYTECHNIC HOSTEL STUDENTS</h1>
+      <p>A safe, supportive, and inclusive living environment designed to foster personal growth, academic success, and lifelong friendships.</p>
+      <p>Our hostel isn't just a place to stay – it's a community that encourages discipline, collaboration, and well-being. With well-maintained facilities and a focus on creating a conducive atmosphere for study and rest, we are committed to ensuring every resident feels at home.</p>
+    </header>
+
+    <img src="${pageContext.request.contextPath}/img/hostel1.png" alt="Hostel Community" />
+
+    <section>
+      <h2>OUR VISION</h2>
+      <p>To be a model student residence that nurtures excellence, unity, and a vibrant campus living experience.</p>
+    </section>
+
+    <section>
+      <h2>OUR MISSION</h2>
+      <ul class="mission-list">
+        <li>To provide safe, clean, and comfortable accommodation for all residents.</li>
+        <li>To support academic excellence by maintaining a peaceful and focused living space.</li>
+        <li>To promote student interaction, leadership, and mutual respect through inclusive community living.</li>
+        <li>To encourage healthy lifestyles and personal responsibility among all hostel residents.</li>
+        <li>To continuously improve hostel services and facilities based on student needs and feedback.</li>
+      </ul>
+    </section>
+
+    <div class="callout">
+      <h3>Join Our Community</h3>
+      <p>Experience the best of campus living with facilities designed to support your academic journey and personal development.</p>
     </div>
-    <nav>
-        <%-- This button should link to your LogoutServlet or logout.jsp --%>
-        <button class="logout-btn" onclick="window.location.href='logout'">Log Out</button>
-    </nav>
-</header>
 
-<div class="background">
-    <div class="box-container">
-        <h1>Polytechnic Hostel</h1>
-        <p>
-            WELCOME TO THE OFFICIAL RESIDENCE OF POLYTECHNIC HOSTEL STUDENTS – A SAFE, SUPPORTIVE, AND INCLUSIVE LIVING ENVIRONMENT DESIGNED TO FOSTER PERSONAL GROWTH, ACADEMIC SUCCESS, AND LIFELONG FRIENDSHIPS.
-            <br><br>
-            OUR HOSTEL ISN’T JUST A PLACE TO STAY – IT’S A COMMUNITY THAT ENCOURAGES DISCIPLINE, COLLABORATION, AND WELL-BEING. WITH WELL-MAINTAINED FACILITIES AND A FOCUS ON CREATING A CONDUCIVE ATMOSPHERE FOR STUDY AND REST, WE ARE COMMITTED TO ENSURING EVERY RESIDENT FEELS AT HOME.
-        </p>
-
-        <h3>📌 OUR VISION</h3>
-        <p>TO BE A MODEL STUDENT RESIDENCE THAT NURTURES EXCELLENCE, UNITY, AND A VIBRANT CAMPUS LIVING EXPERIENCE.</p>
-
-        <h3>📌 OUR MISSION</h3>
-        <ul>
-            <li>• TO PROVIDE SAFE, CLEAN, AND COMFORTABLE ACCOMMODATION FOR ALL RESIDENTS.</li>
-            <li>🎓 TO SUPPORT ACADEMIC EXCELLENCE BY MAINTAINING A PEACEFUL AND FOCUSED LIVING SPACE.</li>
-            <li>🗣 TO PROMOTE STUDENT INTERACTION, LEADERSHIP, AND MUTUAL RESPECT THROUGH INCLUSIVE COMMUNITY LIVING.</li>
-            <li>🎗 TO ENCOURAGE HEALTHY LIFESTYLES AND PERSONAL RESPONSIBILITY AMONG ALL HOSTEL RESIDENTS.</li>
-            <li>🛠 TO CONTINUOUSLY IMPROVE HOSTEL SERVICES AND FACILITIES BASED ON STUDENT NEEDS AND FEEDBACK.</li>
-        </ul>
-
-        <h3>CONTACT US</h3>
-        <p class="contact-info">
-            POLITEKNIK PERAK TAPAH<br>
-            JALAN RAJA MUSA MAHADI<br>
-            31400 TAPAH<br>
-            PERAK<br>
-            05-5457622<br>
-            <a href="https://www.puo.edu.my" target="_blank">https://www.puo.edu.my</a><br>
-            POLITEKNIK@PKT.EDU.MY
-        </p>
-
-        <div class="image-gallery">
-            <img src="img/hostel1.png" alt="Hostel Image 1">
-            <img src="img/hostel2.png" alt="Hostel Image 2">
-        </div>
+    <div class="contact-info">
+      <h2>CONTACT US</h2>
+      <p><strong>POLYTECHNIC PERAK TAPAH</strong></p>
+      <p>JALAN RAJA NUSA NAMADI</p>
+      <p>31489 TAPAH</p>
+      <p>PERAK</p>
+      <p>05-5457622</p>
+      <p>HTTPS://WWW.PUO.EDU.MY</p>
+      <p>POLIKOPK7.EDU.MY</p>
     </div>
+
+    <img src="${pageContext.request.contextPath}/img/hostel2.png" alt="Hostel Facilities">
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn" id="refreshBtn">
+        <i class='bx bx-refresh'></i> Refresh Content
+      </button>
+      <a href="${pageContext.request.contextPath}/index.html" class="action-btn">
+        <i class='bx bxs-home'></i> Back to Home
+      </a>
+    </div>
+  </main>
 </div>
+
+<script>
+  // Pause animation when user hovers over content
+  document.querySelector('main').addEventListener('mouseenter', function() {
+    this.style.animationPlayState = 'paused';
+  });
+  
+  document.querySelector('main').addEventListener('mouseleave', function() {
+    this.style.animationPlayState = 'running';
+  });
+
+  // Refresh button functionality
+  document.getElementById('refreshBtn').addEventListener('click', function() {
+    location.reload();
+  });
+
+  // Reset animation on refresh
+  document.addEventListener('DOMContentLoaded', function() {
+    const main = document.querySelector('main');
+    main.style.animation = 'none';
+    setTimeout(() => {
+      main.style.animation = 'scroll-content 50s linear infinite';
+    }, 10);
+  });
+</script>
 
 </body>
 </html>
