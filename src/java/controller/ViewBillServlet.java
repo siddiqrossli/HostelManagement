@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import model.Bill; // IMPORTANT: Ensure this is here
+import model.Bill;
 
 public class ViewBillServlet extends HttpServlet {
 
@@ -25,38 +25,39 @@ public class ViewBillServlet extends HttpServlet {
             return;
         }
 
-        List<model.Bill> billList = new ArrayList<>();
+        List<Bill> billList = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USERNAME, DB_PASSWORD)) {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            String roomCheckSql = "SELECT roomID FROM student WHERE studentID = ?";
-            try (PreparedStatement roomStmt = conn.prepareStatement(roomCheckSql)) {
+            // Check if student has a room (optional - remove if not needed)
+            boolean hasRoom = false;
+            try (PreparedStatement roomStmt = conn.prepareStatement(
+                "SELECT roomID FROM student WHERE studentID = ?")) {
                 roomStmt.setString(1, studentId);
                 try (ResultSet roomRs = roomStmt.executeQuery()) {
-                    boolean hasRoom = false;
                     if (roomRs.next()) {
-                        String roomID = roomRs.getString("roomID");
-                        hasRoom = (roomID != null && !roomID.trim().isEmpty());
+                        hasRoom = (roomRs.getString("roomID") != null);
                     }
+                }
+            }
 
-                    if (hasRoom) {
-                        String sql = "SELECT billNo, billName, billAmount, paymentStatus, billSequencePerStudent FROM bills WHERE studentID = ? ORDER BY billSequencePerStudent ASC";
-                        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                            pstmt.setString(1, studentId);
-                            try (ResultSet rs = pstmt.executeQuery()) {
-                                while (rs.next()) {
-                                    int billNo = rs.getInt("billNo");
-                                    String billName = rs.getString("billName");
-                                    double billAmount = rs.getDouble("billAmount");
-                                    String paymentStatus = rs.getString("paymentStatus");
-                                    int billSequencePerStudent = rs.getInt("billSequencePerStudent");
-
-                                    model.Bill bill = new model.Bill(billNo, billName, billAmount, paymentStatus, studentId, billSequencePerStudent);
-                                    billList.add(bill);
-                                }
-                            }
-                        }
+            // Always show bills regardless of room status
+            String sql = "SELECT billNo, billName, billAmount, paymentStatus, billSequencePerStudent " +
+                         "FROM bills WHERE studentID = ? ORDER BY billSequencePerStudent ASC";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, studentId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        Bill bill = new Bill(
+                            rs.getInt("billNo"),
+                            rs.getString("billName"),
+                            rs.getDouble("billAmount"),
+                            rs.getString("paymentStatus"),
+                            studentId,
+                            rs.getInt("billSequencePerStudent")
+                        );
+                        billList.add(bill);
                     }
                 }
             }
@@ -77,50 +78,55 @@ public class ViewBillServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         String studentId = (String) session.getAttribute("studentId");
 
-        // Basic session check
         if (studentId == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        if ("payBill".equals(action)) { // This matches the 'action' hidden input in bill.jsp
-            String billNoStr = request.getParameter("billNo"); // Get the billNo from the hidden input
+        if ("payBill".equals(action)) {
+            String billNoStr = request.getParameter("billNo");
 
             if (billNoStr != null && !billNoStr.isEmpty()) {
                 try {
-                    int billNo = Integer.parseInt(billNoStr); // Convert billNo to integer
+                    int billNo = Integer.parseInt(billNoStr);
 
                     try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USERNAME, DB_PASSWORD)) {
                         Class.forName("com.mysql.cj.jdbc.Driver");
 
-                        // SQL to update paymentStatus to 'Paid' for the specific bill and student
-                        String updateSql = "UPDATE bills SET paymentStatus = 'Paid' WHERE billNo = ? AND studentID = ?";
-                        try (PreparedStatement pstmt = conn.prepareStatement(updateSql)) {
+                        // Update payment status
+                        try (PreparedStatement pstmt = conn.prepareStatement(
+                            "UPDATE bills SET paymentStatus = 'Paid' WHERE billNo = ? AND studentID = ?")) {
                             pstmt.setInt(1, billNo);
-                            pstmt.setString(2, studentId); // Add studentId for security (prevents paying other students' bills)
+                            pstmt.setString(2, studentId);
                             int rowsAffected = pstmt.executeUpdate();
 
                             if (rowsAffected > 0) {
-                                request.setAttribute("message", "Bill " + (billNo-1) + " paid successfully!");
+                                // Display bill sequence number instead of billNo-1
+                                try (PreparedStatement seqStmt = conn.prepareStatement(
+                                    "SELECT billSequencePerStudent FROM bills WHERE billNo = ?")) {
+                                    seqStmt.setInt(1, billNo);
+                                    try (ResultSet rs = seqStmt.executeQuery()) {
+                                        if (rs.next()) {
+                                            int seqNo = rs.getInt("billSequencePerStudent");
+                                            request.setAttribute("message", 
+                                                "Bill " + seqNo + " paid successfully!");
+                                        }
+                                    }
+                                }
                             } else {
-                                request.setAttribute("error", "Failed to pay bill " + (billNo-1) + ". Bill not found or already paid.");
+                                request.setAttribute("error", "Payment failed. Bill not found or already paid.");
                             }
                         }
                     }
-                } catch (NumberFormatException e) {
-                    request.setAttribute("error", "Invalid Bill Number provided.");
-                    e.printStackTrace();
                 } catch (Exception e) {
-                    request.setAttribute("error", "An error occurred while processing payment: " + e.getMessage());
                     e.printStackTrace();
+                    request.setAttribute("error", "Payment error: " + e.getMessage());
                 }
             } else {
-                request.setAttribute("error", "Bill Number is missing for payment.");
+                request.setAttribute("error", "Missing bill information");
             }
         }
 
-        // After processing the POST request, call doGet to re-fetch and display the updated bill list.
-        // This ensures the page refreshes with the new 'Paid' status.
         doGet(request, response);
     }
 }

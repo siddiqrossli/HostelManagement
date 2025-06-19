@@ -424,7 +424,7 @@
                 <a href="updateProfile" class="dashboard-button">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
-                <a href="viewBills.jsp" class="dashboard-button">
+                <a href="ViewBillServlet" class="dashboard-button">
                     <i class='bx bxs-credit-card'></i> Bills
                 </a>
             </div>
