@@ -316,17 +316,17 @@
                 <p>${sessionScope.studentId}<br/>Student</p>
             </div>
             <div class="button-group">
+               <a href="updateProfile" class="dashboard-button">
+                    <i class='bx bxs-user'></i> Update Profile
+                </a>
+                 <a href="changePassword" class="dashboard-button">
+                    <i class='bx bxs-wrench'></i> Change Password
+                </a>
                 <a href="ApplyCollegeServlet" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
                     <i class='bx bxs-school'></i> Apply College
                 </a>
-                <a href="changePassword" class="dashboard-button">
-                    <i class='bx bxs-wrench'></i> Change Password
-                </a>
                 <a href="requestMaintenance" class="dashboard-button">
                     <i class='bx bxs-wrench'></i> Request Maintenance
-                </a>
-                <a href="updateProfile" class="dashboard-button">
-                    <i class='bx bxs-user'></i> Update Profile
                 </a>
                 <a href="ViewBillServlet" class="dashboard-button">
                     <i class='bx bxs-credit-card'></i> Bills
