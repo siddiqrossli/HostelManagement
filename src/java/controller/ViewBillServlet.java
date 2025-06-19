@@ -25,12 +25,16 @@ public class ViewBillServlet extends HttpServlet {
             return;
         }
 
+        // Set currentPage attribute for sidebar highlighting
+        request.setAttribute("currentPage", "bills"); // <-- Key change here
+
         List<Bill> billList = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USERNAME, DB_PASSWORD)) {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             // Check if student has a room (optional - remove if not needed)
+            // This block is kept as per original, but it's noted it doesn't filter bills.
             boolean hasRoom = false;
             try (PreparedStatement roomStmt = conn.prepareStatement(
                 "SELECT roomID FROM student WHERE studentID = ?")) {
@@ -83,6 +87,9 @@ public class ViewBillServlet extends HttpServlet {
             return;
         }
 
+        // Set currentPage attribute for sidebar highlighting
+        request.setAttribute("currentPage", "bills"); // <-- Key change here
+
         if ("payBill".equals(action)) {
             String billNoStr = request.getParameter("billNo");
 
@@ -108,7 +115,7 @@ public class ViewBillServlet extends HttpServlet {
                                     try (ResultSet rs = seqStmt.executeQuery()) {
                                         if (rs.next()) {
                                             int seqNo = rs.getInt("billSequencePerStudent");
-                                            request.setAttribute("message", 
+                                            request.setAttribute("message",
                                                 "Bill " + seqNo + " paid successfully!");
                                         }
                                     }
@@ -127,6 +134,6 @@ public class ViewBillServlet extends HttpServlet {
             }
         }
 
-        doGet(request, response);
+        doGet(request, response); // Call doGet to refresh the bill list and retain currentPage
     }
 }

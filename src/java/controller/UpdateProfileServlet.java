@@ -45,6 +45,10 @@ public class UpdateProfileServlet extends HttpServlet {
         // JSP will pick it up from requestScope first.
         request.setAttribute("studentId", studentId);
 
+        // *** ADD THIS LINE FOR ACTIVE NAVIGATION ***
+        request.setAttribute("currentPage", "updateProfile"); // Set this to identify the current page for navigation highlighting
+        // *****************************************
+
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -83,6 +87,7 @@ public class UpdateProfileServlet extends HttpServlet {
                 System.out.println("  request.getAttribute(\"studName\"): " + request.getAttribute("studName"));
                 System.out.println("  request.getAttribute(\"studNumber\"): " + request.getAttribute("studNumber"));
                 System.out.println("  request.getAttribute(\"studEmergencyNumber\"): " + request.getAttribute("studEmergencyNumber"));
+                System.out.println("  request.getAttribute(\"currentPage\"): " + request.getAttribute("currentPage")); // Debug for new attribute
                 // --- END IMPORTANT DEBUG PRINT ---
 
             } else {
@@ -138,6 +143,9 @@ public class UpdateProfileServlet extends HttpServlet {
         System.out.println("  newStudNumber: " + newStudNumber);
         System.out.println("  newStudEmergencyNumber: " + newStudEmergencyNumber);
 
+        // *** ADD THIS LINE FOR ACTIVE NAVIGATION (when forwarding back to JSP on error) ***
+        request.setAttribute("currentPage", "updateProfile");
+        // *****************************************
 
         // Basic validation for new data
         if (newStudName == null || newStudName.trim().isEmpty() ||
@@ -177,7 +185,7 @@ public class UpdateProfileServlet extends HttpServlet {
             if (rowsAffected > 0) {
                 System.out.println("doPost - Profile updated successfully! Rows affected: " + rowsAffected);
                 // Update session attributes with new name (if name was updated)
-                session.setAttribute("studentName", newStudName);
+                session.setAttribute("studName", newStudName); // Changed from studentName to studName as per JSP
                 // Set a success message in session to be displayed on the dashboard
                 session.setAttribute("successMessage", "Profile updated successfully!");
                 response.sendRedirect("dashboard.jsp"); // Redirect back to dashboard

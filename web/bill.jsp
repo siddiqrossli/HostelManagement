@@ -7,9 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Bills - Polytechnic Hostel</title>
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Base Styles */
@@ -164,6 +162,12 @@
             font-size: 20px;
         }
 
+        /* Active button styling */
+        .dashboard-button.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
         .sidebar-footer {
             margin-top: auto;
             text-align: center;
@@ -187,7 +191,7 @@
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 1500px;
-            height: 825px;
+            height: 825px; /* Consider making this height more dynamic or auto */
         }
 
         .top-bar {
@@ -277,6 +281,7 @@
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
+            display: block; /* Ensure it takes up full width for centering */
         }
 
         /* Notice Panel Styles */
@@ -365,7 +370,6 @@
     </header>
 
     <div class="dashboard-container">
-        <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="student-card">
                 <img src="img/student.png" alt="Student Photo" class="profile-pic"/>
@@ -373,19 +377,19 @@
                 <p>${sessionScope.studentId}<br/>Student</p>
             </div>
             <div class="button-group">
-               <a href="updateProfile" class="dashboard-button">
+               <a href="updateProfile" class="dashboard-button <c:if test="${requestScope.currentPage eq 'updateProfile'}">active</c:if>">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
-                 <a href="changePassword" class="dashboard-button">
+                <a href="changePassword" class="dashboard-button <c:if test="${requestScope.currentPage eq 'changePassword'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Change Password
                 </a>
-                <a href="ApplyCollegeServlet" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
+                <a href="ApplyCollegeServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'applyCollege'}">active</c:if>">
                     <i class='bx bxs-school'></i> Apply College
                 </a>
-                <a href="requestMaintenance" class="dashboard-button">
+                <a href="requestMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage eq 'requestMaintenance'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Request Maintenance
                 </a>
-                <a href="ViewBillServlet" class="dashboard-button">
+                <a href="ViewBillServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'bills'}">active</c:if>">
                     <i class='bx bxs-credit-card'></i> Bills
                 </a>
             </div>
@@ -394,7 +398,6 @@
             </footer>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="container">
                 <div class="top-bar">
@@ -452,7 +455,6 @@
             </div>
         </main>
 
-        <!-- Right Notice Panel -->
         <aside class="notice-panel">
             <h2>Notices</h2>
             <ul class="notice-list">

@@ -7,9 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password - Polytechnic Hostel</title>
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Base Styles */
@@ -142,7 +140,7 @@
         }
 
         .dashboard-button {
-            background-color: rgba(169, 68, 66, 0.1);
+            background-color: rgba(169, 68, 66, 0.1); /* Default background color for non-active buttons */
             padding: 12px;
             border-radius: 8px;
             text-align: center;
@@ -159,6 +157,13 @@
             color: var(--white);
             transform: translateX(5px);
         }
+
+        /* New CSS for active button */
+        .dashboard-button.active {
+            background-color: var(--primary); /* Active background color */
+            color: var(--white); /* Active text color */
+        }
+        /* End New CSS */
 
         .dashboard-button i {
             font-size: 20px;
@@ -178,6 +183,9 @@
             padding: 30px;
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(5px);
+            display: flex; /* Added to center the form */
+            justify-content: center; /* Added to center the form horizontally */
+            align-items: flex-start; /* Aligns to the top, adjust to 'center' if you want it vertically centered */
         }
 
         .container {
@@ -188,8 +196,7 @@
             width: 100%;
             max-width: 1500px;
             height: 100%;
-            max-height: 825px;
-            
+            max-height: 825px; /* Consider if you need a fixed height or min-height */
         }
 
         .top-bar {
@@ -268,14 +275,14 @@
             border: 1px solid #c3e6cb;
         }
 
-        .button-bar {
+        .button-bar { /* This class seems unused in this JSP, but keeping it as it was in original CSS */
             margin-top: 25px;
             display: flex;
             justify-content: space-between;
             gap: 10px;
         }
 
-        .btn {
+        .btn { /* This class seems unused in this JSP, but keeping it as it was in original CSS */
             padding: 10px 20px;
             border: none;
             border-radius: 6px;
@@ -286,13 +293,13 @@
             transition: background-color 0.3s ease;
         }
 
-        .btn-back {
+        .btn-back { /* This class seems unused in this JSP, but keeping it as it was in original CSS */
             background-color: var(--light);
             color: var(--primary);
             border: 1px solid var(--primary);
         }
 
-        .btn-back:hover {
+        .btn-back:hover { /* This class seems unused in this JSP, but keeping it as it was in original CSS */
             background-color: var(--primary);
             color: var(--white);
         }
@@ -378,7 +385,6 @@
     </header>
 
     <div class="dashboard-container">
-        <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="student-card">
                 <img src="img/student.png" alt="Student Photo" class="profile-pic"/>
@@ -386,19 +392,20 @@
                 <p>${sessionScope.studentId}<br/>Student</p>
             </div>
             <div class="button-group">
-                <a href="updateProfile" class="dashboard-button">
+                <%-- Apply 'active' class based on the 'currentPage' request attribute --%>
+                <a href="updateProfile" class="dashboard-button <c:if test="${requestScope.currentPage == 'updateProfile'}">active</c:if>">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
-                 <a href="changePassword" class="dashboard-button">
+                <a href="changePassword" class="dashboard-button <c:if test="${requestScope.currentPage == 'changePassword'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Change Password
                 </a>
-                <a href="ApplyCollegeServlet" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
+                <a href="ApplyCollegeServlet" class="dashboard-button <c:if test="${requestScope.currentPage == 'applyCollege'}">active</c:if>">
                     <i class='bx bxs-school'></i> Apply College
                 </a>
-                <a href="requestMaintenance" class="dashboard-button">
+                <a href="requestMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage == 'requestMaintenance'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Request Maintenance
                 </a>
-                <a href="ViewBillServlet" class="dashboard-button">
+                <a href="ViewBillServlet" class="dashboard-button <c:if test="${requestScope.currentPage == 'bills'}">active</c:if>">
                     <i class='bx bxs-credit-card'></i> Bills
                 </a>
             </div>
@@ -407,7 +414,6 @@
             </footer>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="container">
                 <div class="top-bar">
@@ -416,10 +422,14 @@
 
                 <c:if test="${not empty success}">
                     <div class="message success-message">${success}</div>
+                    <%-- Remove the success message from request scope after displaying --%>
+                    <c:remove var="success" scope="request"/>
                 </c:if>
 
                 <c:if test="${not empty error}">
                     <div class="message error-message">${error}</div>
+                    <%-- Remove the error message from request scope after displaying --%>
+                    <c:remove var="error" scope="request"/>
                 </c:if>
 
                 <form action="changePassword" method="post">
@@ -440,12 +450,9 @@
 
                     <button type="submit" class="btn-submit">Change Password</button>
                 </form>
-
-                
             </div>
         </main>
 
-        <!-- Right Notice Panel -->
         <aside class="notice-panel">
             <h2>Notices</h2>
             <ul class="notice-list">

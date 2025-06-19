@@ -27,11 +27,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <title>Student Dashboard - Polytechnic Hostel</title>
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Base Styles */
@@ -184,6 +181,12 @@
 
         .dashboard-button i {
             font-size: 20px;
+        }
+
+        /* Active button styling */
+        .dashboard-button.active {
+            background-color: var(--primary);
+            color: var(--white);
         }
 
         .sidebar-footer {
@@ -383,7 +386,6 @@
     </header>
 
     <div class="dashboard-container">
-        <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="student-card">
                 <img src="img/student.png" alt="Student Photo" class="profile-pic"/>
@@ -391,19 +393,19 @@
                 <p>${sessionScope.studentId}<br/>Student</p>
             </div>
             <div class="button-group">
-                <a href="updateProfile" class="dashboard-button">
+                <a href="updateProfile" class="dashboard-button <c:if test="${requestScope.currentPage eq 'updateProfile'}">active</c:if>">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
-                 <a href="changePassword" class="dashboard-button">
+                <a href="changePassword" class="dashboard-button <c:if test="${requestScope.currentPage eq 'changePassword'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Change Password
                 </a>
-                <a href="ApplyCollegeServlet" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
+                <a href="ApplyCollegeServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'applyCollege'}">active</c:if>">
                     <i class='bx bxs-school'></i> Apply College
                 </a>
-                <a href="requestMaintenance" class="dashboard-button">
+                <a href="requestMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage eq 'requestMaintenance'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Request Maintenance
                 </a>
-                <a href="ViewBillServlet" class="dashboard-button">
+                <a href="ViewBillServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'bills'}">active</c:if>">
                     <i class='bx bxs-credit-card'></i> Bills
                 </a>
             </div>
@@ -412,7 +414,6 @@
             </footer>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-dashboard">
             <section class="welcome-box">
                 <h1>Welcome Back, <span>${sessionScope.studName}</span></h1>
@@ -453,7 +454,7 @@
                     <h2>Activities Joined</h2>
                     <ul>
                         <c:forEach items="${sessionScope.activities}" var="activity">
-                        <li>${activity}</li>
+                            <li>${activity}</li>
                         </c:forEach>
                     </ul>
                 </div>
@@ -465,12 +466,12 @@
                     <%
                         String roomID = (String) session.getAttribute("roomID");
                         String Block = "Unknown";
-                        if (roomID != null) {
-                        if (roomID.substring(0, 2).equals("TF"))
-                            Block = "Tun Fatimah";
-                        else if (roomID.substring(0, 2).equals("HT"))
-                            Block = "Hang Tuah";
-                            }
+                        if (roomID != null && roomID.length() >= 2) { // Added null check and length check
+                            if (roomID.substring(0, 2).equals("TF"))
+                                Block = "Tun Fatimah";
+                            else if (roomID.substring(0, 2).equals("HT"))
+                                Block = "Hang Tuah";
+                        }
                     %>
                     <p>Block: <%=Block%> </p>
                 </c:if>
@@ -486,17 +487,16 @@
             </section>
         </main>
 
-        <!-- Right Notice Panel -->
         <aside class="notice-panel">
-    <h2>Notices</h2>
-    <ul class="notice-list">
-        <c:forEach items="${notices}" var="notice">
-            <li>${notice.name} - ${notice.date}</li>
-        </c:forEach>
-    </ul>
-</aside>
+            <h2>Notices</h2>
+            <ul class="notice-list">
+                <c:forEach items="${notices}" var="notice">
+                    <li>${notice.name} - ${notice.date}</li>
+                </c:forEach>
+            </ul>
+        </aside>
     </div>
-                        
+                                    
     <script>
         const labels = [];
         const data = [];

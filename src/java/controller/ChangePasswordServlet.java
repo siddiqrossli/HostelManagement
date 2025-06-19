@@ -26,6 +26,10 @@ public class ChangePasswordServlet extends HttpServlet {
             return;
         }
 
+        // *** ADD THIS LINE FOR ACTIVE NAVIGATION ***
+        request.setAttribute("currentPage", "changePassword");
+        // *****************************************
+
         request.getRequestDispatcher("changePassword.jsp").forward(request, response);
     }
 
@@ -44,6 +48,10 @@ public class ChangePasswordServlet extends HttpServlet {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmNewPassword = request.getParameter("confirmNewPassword");
+
+        // *** ADD THIS LINE FOR ACTIVE NAVIGATION (when forwarding back to JSP on error) ***
+        request.setAttribute("currentPage", "changePassword");
+        // *****************************************
 
         // Basic validation
         if (oldPassword == null || oldPassword.trim().isEmpty() ||

@@ -7,9 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Maintenance - Polytechnic Hostel</title>
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Base Styles */
@@ -160,6 +158,13 @@
             transform: translateX(5px);
         }
 
+        /* Style for the current active page button */
+        .dashboard-button.current-page-button {
+            background-color: var(--primary); /* Highlight color */
+            color: var(--white);
+            pointer-events: none; /* Make it unclickable */
+        }
+
         .dashboard-button i {
             font-size: 20px;
         }
@@ -190,7 +195,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 1500px;
-            height: 825px;
+            height: 825px; /* Keep consistent with original */
         }
 
         .header-row {
@@ -323,6 +328,43 @@
             border: 1px solid #3c763d;
         }
 
+        /* NEW STYLE: For the "No room" message */
+        .no-room-message {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--light);
+            border-radius: 8px;
+            border: 1px solid var(--grey);
+            margin-top: 50px;
+        }
+
+        .no-room-message h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .no-room-message p {
+            font-size: 16px;
+            color: var(--dark-grey);
+            line-height: 1.5;
+        }
+
+        .no-room-message a {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .no-room-message a:hover {
+            background-color: #307ac3;
+        }
+
+
         /* Notice Panel Styles */
         .notice-panel {
             width: 280px;
@@ -350,6 +392,10 @@
             border-bottom: 1px solid var(--grey);
             font-size: 14px;
             transition: color 0.3s;
+        }
+
+        .notice-list li:last-child {
+             border-bottom: none; /* No border for the last item */
         }
 
         .notice-list li:hover {
@@ -404,7 +450,6 @@
     </header>
 
     <div class="dashboard-container">
-        <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="student-card">
                 <img src="img/student.png" alt="Student Photo" class="profile-pic"/>
@@ -415,13 +460,15 @@
                 <a href="updateProfile" class="dashboard-button">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
-                 <a href="changePassword" class="dashboard-button">
+                <a href="changePassword" class="dashboard-button">
                     <i class='bx bxs-wrench'></i> Change Password
                 </a>
-                <a href="ApplyCollegeServlet" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
+                <%-- Apply College button, use class for styling --%>
+                <a href="ApplyCollegeServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'applyCollege'}">current-page-button</c:if>">
                     <i class='bx bxs-school'></i> Apply College
                 </a>
-                <a href="requestMaintenance" class="dashboard-button">
+                <%-- Request Maintenance button with highlighting logic --%>
+                <a href="requestMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage eq 'requestMaintenance'}">current-page-button</c:if>">
                     <i class='bx bxs-wrench'></i> Request Maintenance
                 </a>
                 <a href="ViewBillServlet" class="dashboard-button">
@@ -433,7 +480,6 @@
             </footer>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="container">
                 <div class="header-row">
@@ -447,45 +493,91 @@
                     </div>
                 </c:if>
 
-                <div class="info-box">
-                    <div class="info-item"><span>Name:</span> ${sessionScope.studName}</div>
-                    <div class="info-item"><span>ID:</span> ${requestScope.studentId}</div>
-                    <div class="info-item"><span>Phone:</span> ${requestScope.phoneNumber}</div>
-                    <div class="info-item"><span>Room:</span> ${requestScope.roomNumber}</div>
-                </div>
+                <c:choose>
+                    <c:when test="${requestScope.hasRoom}">
+                        <%-- Display form if student has a room --%>
+                        <div class="info-box">
+                            <div class="info-item"><span>Name:</span> ${sessionScope.studName}</div>
+                            <div class="info-item"><span>ID:</span> ${requestScope.studentId}</div>
+                            <div class="info-item"><span>Phone:</span> ${requestScope.phoneNumber}</div>
+                            <div class="info-item"><span>Room:</span> ${requestScope.roomNumber}</div>
+                        </div>
 
-                <form action="requestMaintenance" method="post">
-                    <label for="category">Issue Category</label>
-                    <select id="category" name="category" required>
-                        <option value="">-- Select --</option>
-                        <option value="Plumbing Issue" <c:if test="${requestScope.category eq 'Plumbing Issue'}">selected</c:if>>Plumbing Issue</option>
-                        <option value="Electrical Issue" <c:if test="${requestScope.category eq 'Electrical Issue'}">selected</c:if>>Electrical Issue</option>
-                        <option value="Furniture Damage" <c:if test="${requestScope.category eq 'Furniture Damage'}">selected</c:if>>Furniture Damage</option>
-                        <option value="Key-Room Missing" <c:if test="${requestScope.category eq 'Key-Room Missing'}">selected</c:if>>Key-Room Missing</option>
-                        <option value="Pest Control" <c:if test="${requestScope.category eq 'Pest Control'}">selected</c:if>>Pest Control</option>
-                        <option value="Cleaning Services" <c:if test="${requestScope.category eq 'Cleaning Services'}">selected</c:if>>Cleaning Services</option>
-                        <option value="Other" <c:if test="${requestScope.category eq 'Other'}">selected</c:if>>Other</option>
-                    </select>
+                        <form action="requestMaintenance" method="post" onsubmit="return validateForm()">
+                            <label for="category">Issue Category</label>
+                            <select id="category" name="category" required>
+                                <option value="">-- Select --</option>
+                                <option value="Plumbing Issue" <c:if test="${requestScope.category eq 'Plumbing Issue'}">selected</c:if>>Plumbing Issue</option>
+                                <option value="Electrical Issue" <c:if test="${requestScope.category eq 'Electrical Issue'}">selected</c:if>>Electrical Issue</option>
+                                <option value="Furniture Damage" <c:if test="${requestScope.category eq 'Furniture Damage'}">selected</c:if>>Furniture Damage</option>
+                                <option value="Air-Conditioning" <c:if test="${requestScope.category eq 'Air-Conditioning'}">selected</c:if>>Air-Conditioning</option>
+                                <option value="Key-Room Missing" <c:if test="${requestScope.category eq 'Key-Room Missing'}">selected</c:if>>Key-Room Missing</option> <%-- CORRECTED LINE --%>
+                                <option value="Pest Control" <c:if test="${requestScope.category eq 'Pest Control'}">selected</c:if>>Pest Control</option>
+                                <option value="Cleaning Services" <c:if test="${requestScope.category eq 'Cleaning Services'}">selected</c:if>>Cleaning Services</option>
+                                <option value="Other" <c:if test="${requestScope.category eq 'Other'}">selected</c:if>>Other</option>
+                            </select>
 
-                    <label for="details">Maintenance Details</label>
-                    <textarea id="details" name="details" rows="5" placeholder="Describe the issue..." required>${requestScope.details}</textarea>
+                            <label for="details">Maintenance Details</label>
+                            <textarea id="details" name="details" rows="5" placeholder="Describe the issue..." required>${requestScope.details}</textarea>
 
-                    <div class="btn-group">
-                        <button type="submit" class="btn-submit">Submit Report</button>
-                    </div>
-                </form>
+                            <div class="btn-group">
+                                <button type="submit" class="btn-submit">Submit Report</button>
+                            </div>
+                        </form>
+                    </c:when>
+                    <c:otherwise>
+                        <%-- Display message if student does not have a room --%>
+                        <div class="no-room-message">
+                            <h2>No Room Assigned</h2>
+                            <p>You currently do not have a room assigned. To request maintenance services, please apply for a room first.</p>
+                            <a href="ApplyCollegeServlet">Apply for a Room</a>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </main>
 
-        <!-- Right Notice Panel -->
         <aside class="notice-panel">
             <h2>Notices</h2>
             <ul class="notice-list">
-                <c:forEach items="${notices}" var="notice">
-                    <li>${notice.name} - ${notice.date}</li>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${not empty requestScope.notices}">
+                        <c:forEach items="${requestScope.notices}" var="notice">
+                            <li>${notice.name} - ${notice.date}</li>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <li>No notices available.</li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </aside>
     </div>
+
+    <script>
+        function validateForm() {
+            var category = document.getElementById("category").value;
+            var details = document.getElementById("details").value;
+            var messageDiv = document.querySelector(".message");
+
+            // Clear previous message
+            if (messageDiv) {
+                messageDiv.remove();
+            }
+
+            if (category === "" || details.trim() === "") {
+                var container = document.querySelector(".container");
+                var newMessageDiv = document.createElement("div");
+                newMessageDiv.classList.add("message", "error");
+                newMessageDiv.textContent = "Please select a category and provide maintenance details.";
+                container.insertBefore(newMessageDiv, container.firstChild.nextSibling); // Insert after header-row
+
+                // Scroll to the top to show the message
+                window.scrollTo(0, 0);
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+    </script>
 </body>
 </html>
