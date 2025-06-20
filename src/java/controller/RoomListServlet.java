@@ -11,6 +11,8 @@ import javax.servlet.http.*;
 public class RoomListServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private final int MAX_CAPACITY = 4; // Maximum beds per room
+    private final int ROOMS_PER_PAGE = 15; // Increased to 15 rooms per page
 
     private final String jdbcURL = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&useSSL=false";
     private final String jdbcUsername = "farish";
@@ -18,19 +20,24 @@ public class RoomListServlet extends HttpServlet {
 
     public static class Room {
         private String roomID;
-        private int roomCapacity;
+        private int availableSpaces;
+        private int maxCapacity;
 
-        public Room(String roomID, int roomCapacity) {
+        public Room(String roomID, int availableSpaces, int maxCapacity) {
             this.roomID = roomID;
-            this.roomCapacity = roomCapacity;
+            this.availableSpaces = availableSpaces;
+            this.maxCapacity = maxCapacity;
         }
 
         public String getRoomID() { return roomID; }
-        public int getRoomCapacity() { return roomCapacity; }
+        public int getAvailableSpaces() { return availableSpaces; }
 
         public String getStatus() {
-            if (roomCapacity >= 4) return "Fully Booked";
-            else return (4 - roomCapacity) + " space(s) left";
+            if (availableSpaces <= 0) {
+                return "Fully Booked";
+            } else {
+                return availableSpaces + " space" + (availableSpaces != 1 ? "s" : "") + " left";
+            }
         }
     }
 
@@ -42,17 +49,44 @@ public class RoomListServlet extends HttpServlet {
             collegePrefix = "HT"; // Default to Hang Tuah
         }
 
+        int page = 1;
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+        } catch (NumberFormatException e) {
+            // Default to page 1 if invalid page number
+        }
+
         ArrayList<Room> rooms = new ArrayList<>();
+        int totalRooms = 0;
+        int totalPages = 1;
 
         try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword)) {
-            String sql = "SELECT roomID, roomCapacity FROM rooms WHERE roomID LIKE ?";
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Get total count of rooms
+            String countSql = "SELECT COUNT(*) FROM rooms WHERE roomID LIKE ?";
+            try (PreparedStatement countStmt = conn.prepareStatement(countSql)) {
+                countStmt.setString(1, collegePrefix + "%");
+                ResultSet countRs = countStmt.executeQuery();
+                if (countRs.next()) {
+                    totalRooms = countRs.getInt(1);
+                    totalPages = (int) Math.ceil((double) totalRooms / ROOMS_PER_PAGE);
+                    
+                    // Ensure page number is within valid range
+                    if (page < 1) page = 1;
+                    if (page > totalPages) page = totalPages;
+                }
+            }
+
+            // Get rooms for current page
+            String roomSql = "SELECT roomID, roomCapacity FROM rooms WHERE roomID LIKE ? ORDER BY roomID LIMIT ? OFFSET ?";
+            try (PreparedStatement stmt = conn.prepareStatement(roomSql)) {
                 stmt.setString(1, collegePrefix + "%");
+                stmt.setInt(2, ROOMS_PER_PAGE);
+                stmt.setInt(3, (page - 1) * ROOMS_PER_PAGE);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     String roomID = rs.getString("roomID");
-                    int capacity = rs.getInt("roomCapacity");
-                    rooms.add(new Room(roomID, capacity));
+                    int availableSpaces = rs.getInt("roomCapacity");
+                    rooms.add(new Room(roomID, availableSpaces, MAX_CAPACITY));
                 }
             }
         } catch (SQLException e) {
@@ -62,6 +96,8 @@ public class RoomListServlet extends HttpServlet {
 
         request.setAttribute("rooms", rooms);
         request.setAttribute("college", collegePrefix);
+        request.setAttribute("page", page);
+        request.setAttribute("totalPages", totalPages);
         RequestDispatcher dispatcher = request.getRequestDispatcher("roomList.jsp");
         dispatcher.forward(request, response);
     }

@@ -12,7 +12,6 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Base Styles */
         :root {
             --primary: #a94442;
             --primary-dark: #8c3a3a;
@@ -359,6 +358,22 @@
                 padding: 20px;
             }
         }
+        
+        .room-capacity {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 0.9em;
+            color: var(--dark-grey);
+        }
+
+        .capacity-full {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .capacity-available {
+            color: var(--success);
+        }
     </style>
     <script>
         function submitForView() {
@@ -366,6 +381,17 @@
             const hiddenSubmit = form.querySelector('input[name="action"]');
             if (hiddenSubmit) hiddenSubmit.remove();
             form.submit();
+        }
+
+        // New function to handle room selection changes
+        function updateRoomSelection() {
+            const select = document.querySelector('select[name="roomID"]');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            // If the "Select Room" placeholder is chosen, clear any previous selection
+            if (selectedOption.disabled) {
+                document.querySelector('.room-info').style.display = 'none';
+            }
         }
     </script>
 </head>
@@ -388,10 +414,10 @@
                 <p>${sessionScope.studentId}<br/>Student</p>
             </div>
             <div class="button-group">
-               <a href="updateProfile" class="dashboard-button">
+                <a href="updateProfile" class="dashboard-button">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
-                 <a href="changePassword" class="dashboard-button">
+                <a href="changePassword" class="dashboard-button">
                     <i class='bx bxs-wrench'></i> Change Password
                 </a>
                 <a href="ApplyCollegeServlet" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
@@ -419,6 +445,11 @@
                     <div class="success-message"><%= message %></div>
                 <% } %>
 
+                <% String error = (String) request.getAttribute("error"); %>
+                <% if (error != null) { %>
+                    <div class="error-message"><%= error %></div>
+                <% } %>
+
                 <form method="post" action="RoomBookingServlet" id="roomForm">
                     <select name="roomID" onchange="submitForView()">
                         <option disabled selected>-- Select Room --</option>
@@ -430,7 +461,9 @@
                                 for (String roomId : roomList) {
                                     String selected = roomId.equals(selectedRoomId) ? "selected" : "";
                         %>
-                            <option value="<%= roomId %>" <%= selected %>><%= roomId %></option>
+                            <option value="<%= roomId %>" <%= selected %>>
+                                <%= roomId %>
+                            </option>
                         <%
                                 }
                             }
@@ -445,7 +478,12 @@
                         <div class="room-info">
                             <h3>Room Details</h3>
                             <p><strong>Room:</strong> <%= selectedRoomId %></p>
-                            <p><strong>Occupants:</strong></p>
+                            <p><strong>Availability:</strong> 
+                                <span class="room-capacity <%= occupantCount >= 4 ? "capacity-full" : "capacity-available" %>">
+                                    <%= 4 - occupantCount %> of 4 spaces remaining
+                                </span>
+                            </p>
+                            <p><strong>Current Occupants:</strong></p>
                             <ol>
                             <%
                                 if (occupants != null && !occupants.isEmpty()) {
@@ -456,7 +494,7 @@
                                     }
                                 } else {
                             %>
-                                <li>No occupants in this room.</li>
+                                <li>No occupants in this room yet</li>
                             <%
                                 }
                             %>
@@ -465,8 +503,8 @@
                             <%
                                 if (occupantCount >= 4) {
                             %>
-                                <div class="full-message">This room is full</div>
-                                <a href="dashboard.jsp" class="btn-secondary">← Back to Dashboard</a>
+                                <div class="full-message">This room is now full</div>
+                                <a href="roomBooking.jsp" class="btn-secondary">← Back to Room Selection</a>
                             <%
                                 } else {
                             %>
@@ -477,10 +515,6 @@
                                 }
                             %>
                         </div>
-                    <%
-                        } else {
-                    %>
-                        
                     <%
                         }
                     %>
