@@ -49,22 +49,26 @@
             border-top: 1px solid #f5c9c9;
             border-bottom: 1px solid #f5c9c9;
             padding: 12px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
 
         .role-button {
             background-color: #fdf2f1;
             border: 1px solid #8b0000;
             color: #8b0000;
-            padding: 6px 10px;
+            padding: 10px 15px;
             border-radius: 6px;
             font-size: 13px;
             text-decoration: none;
-            margin: 0 6px;
             font-weight: bold;
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            width: 100px;
+            box-sizing: border-box;
         }
 
         .role-button:hover {
@@ -72,12 +76,21 @@
             color: white;
         }
 
-       .role-button img {
-    width: 25px;
-    height: 25px;
-    margin-bottom: 4px;
-    object-fit: contain;
-         }
+        .role-button img {
+            width: 25px;
+            height: 25px;
+            margin-bottom: 4px;
+            object-fit: contain;
+        }
+
+        .role-button.active {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        .role-button.active img {
+            filter: brightness(0) invert(1);
+        }
 
         form {
             text-align: left;
@@ -152,25 +165,22 @@
 <body>
 
 <div class="login-container">
-    <h1>Polytechnic Hostel</h1> <%-- Main title --%>
+    <h1>Polytechnic Hostel</h1>
     <p class="welcome-text">Welcome back</p>
     <p class="welcome-text">Please enter your details to sign in as staff.</p>
 
     <div class="roles-section">
-        <p>Roles :</p>
-        <%-- Student Role Button (links to student login) --%>
         <a href="login.jsp" class="role-button">
             <img src="img/student.png" alt="Student Icon">
             Student
         </a>
-        <%-- Staff Role Button (current page, so styled for 'active') --%>
-        <a href="staffLogin.jsp" class="role-button" style="background-color: #007bff; color: white;">
-            <img src="img/staff.png" alt="Staff Icon" style="filter: brightness(0) invert(1);"> <%-- Icon will be white on blue bg --%>
+        <a href="staffLogin.jsp" class="role-button active">
+            <img src="img/staff.png" alt="Staff Icon">
             Staff
         </a>
     </div>
 
-    <h2>Staff Login</h2> <%-- Subheading for the form --%>
+    <h2>Staff Login</h2>
 
     <c:if test="${not empty requestScope.error}">
         <div class="error-message">

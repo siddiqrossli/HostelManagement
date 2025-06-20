@@ -50,22 +50,26 @@
             border-top: 1px solid #f5c9c9;
             border-bottom: 1px solid #f5c9c9;
             padding: 12px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
 
         .role-button {
             background-color: #fdf2f1;
             border: 1px solid #8b0000;
             color: #8b0000;
-            padding: 6px 10px;
+            padding: 10px 15px;
             border-radius: 6px;
             font-size: 13px;
             text-decoration: none;
-            margin: 0 6px;
             font-weight: bold;
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            width: 100px; /* Fixed width for both buttons */
+            box-sizing: border-box;
         }
 
         .role-button:hover {
@@ -73,12 +77,21 @@
             color: white;
         }
 
-       .role-button img {
-    width: 25px;
-    height: 25px;
-    margin-bottom: 4px;
-    object-fit: contain;
-         }
+        .role-button img {
+            width: 25px;
+            height: 25px;
+            margin-bottom: 4px;
+            object-fit: contain;
+        }
+
+        .role-button.active {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        .role-button.active img {
+            filter: brightness(0) invert(1);
+        }
 
         form {
             text-align: left;
@@ -158,9 +171,8 @@
     <p class="welcome-text">Please enter your details to sign in as a student.</p>
 
     <div class="roles-section">
-        <p><strong>Roles:</strong></p>
-        <a href="login.jsp" class="role-button" style="background-color: #8b0000; color: white;">
-            <img src="img/student.png" alt="Student Icon" style="filter: brightness(0) invert(1);">
+        <a href="login.jsp" class="role-button active">
+            <img src="img/student.png" alt="Student Icon">
             Student
         </a>
         <a href="staffLogin.jsp" class="role-button">
