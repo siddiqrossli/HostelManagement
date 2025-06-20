@@ -4,14 +4,12 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maintenance Status - Polytechnic Hostel</title>
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Base Styles */
@@ -162,6 +160,13 @@
             transform: translateX(5px);
         }
 
+        /* Style for the current active page button */
+        .dashboard-button.current-page-button {
+            background-color: var(--primary); /* Highlight color */
+            color: var(--white);
+            pointer-events: none; /* Make it unclickable */
+        }
+
         .dashboard-button i {
             font-size: 20px;
         }
@@ -189,20 +194,36 @@
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 1500px;
-            height: 825px;
         }
 
-        .top-bar {
+        .header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        h2 {
-            color: var(--primary);
+        .header-row h1 {
+            margin: 0;
             font-size: 24px;
             font-weight: 600;
+            color: var(--primary);
+        }
+
+        .status-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .status-btn:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.03);
         }
 
         table {
@@ -248,22 +269,24 @@
             font-weight: 600;
         }
 
-        .button-bar {
-            margin-top: 25px;
+        .btn-group {
             display: flex;
             justify-content: space-between;
-            gap: 10px;
+            margin-top: 30px;
+            gap: 15px;
         }
 
-        .btn {
-            padding: 10px 20px;
+        .btn-group a,
+        .btn-group button {
+            flex: 1;
+            padding: 12px;
             border: none;
+            text-align: center;
+            font-size: 16px;
             border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            cursor: pointer;
+            transition: 0.3s ease;
         }
 
         .btn-back {
@@ -277,13 +300,33 @@
             color: var(--white);
         }
 
-        .btn-request {
+        .btn-submit {
             background-color: var(--primary);
             color: var(--white);
         }
 
-        .btn-request:hover {
+        .btn-submit:hover {
             background-color: var(--primary-dark);
+        }
+
+        .message {
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            background-color: #ffe5e5;
+            color: #a94442;
+            border: 1px solid #a94442;
+        }
+
+        .success {
+            background-color: #e5ffe5;
+            color: #3c763d;
+            border: 1px solid #3c763d;
         }
 
         /* Notice Panel Styles */
@@ -315,6 +358,10 @@
             transition: color 0.3s;
         }
 
+        .notice-list li:last-child {
+             border-bottom: none; /* No border for the last item */
+        }
+
         .notice-list li:hover {
             color: var(--primary);
         }
@@ -343,15 +390,15 @@
                 padding: 10px 15px;
             }
             .main-content {
-                padding: 20px;
+                padding: 15px;
             }
-            .container {
-                padding: 20px;
-            }
-            .top-bar {
+            .header-row {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 15px;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
             }
             table {
                 display: block;
@@ -371,7 +418,6 @@
     </header>
 
     <div class="dashboard-container">
-        <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="student-card">
                 <img src="img/student.png" alt="Student Photo" class="profile-pic"/>
@@ -382,13 +428,13 @@
                 <a href="updateProfile" class="dashboard-button">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
-                 <a href="changePassword" class="dashboard-button">
+                <a href="changePassword" class="dashboard-button">
                     <i class='bx bxs-wrench'></i> Change Password
                 </a>
-                <a href="ApplyCollegeServlet" class="dashboard-button" style="background-color: var(--primary); color: var(--white);">
+                <a href="ApplyCollegeServlet" class="dashboard-button">
                     <i class='bx bxs-school'></i> Apply College
                 </a>
-                <a href="requestMaintenance" class="dashboard-button">
+                <a href="requestMaintenance" class="dashboard-button current-page-button">
                     <i class='bx bxs-wrench'></i> Request Maintenance
                 </a>
                 <a href="ViewBillServlet" class="dashboard-button">
@@ -400,13 +446,18 @@
             </footer>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="container">
-                <div class="top-bar">
-                    <h2>Maintenance Status</h2>
-                    <a href="requestMaintenance.jsp" class="btn btn-request">+ New Request</a>
+                <div class="header-row">
+                    <h1>Maintenance Status</h1>
+                    <a href="requestMaintenance" class="status-btn">+ New Request</a>
                 </div>
+
+                <c:if test="${not empty requestScope.message}">
+                    <div class="message ${requestScope.messageType == 'success' ? 'success' : 'error'}">
+                        ${requestScope.message}
+                    </div>
+                </c:if>
 
                 <%
                     List<MaintenanceRequest> maintenanceRequests = (List<MaintenanceRequest>) request.getAttribute("maintenanceRequests");
@@ -447,12 +498,9 @@
                         </tbody>
                     </table>
                 <% } %>
-
-                
             </div>
         </main>
 
-        <!-- Right Notice Panel -->
         <aside class="notice-panel">
             <h2>Notices</h2>
             <ul class="notice-list">
