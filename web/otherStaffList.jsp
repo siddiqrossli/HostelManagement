@@ -1,23 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%
     if (session.getAttribute("staffId") == null) {
         response.sendRedirect("staffLogin.jsp");
         return;
     }
 %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Dashboard - Polytechnic Hostel</title>
+    <title>Staff List - Polytechnic Hostel</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #a94442;
@@ -50,12 +46,6 @@
             background-color: rgba(249, 249, 249, 0.9);
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* Header Styles */
         header {
             background-color: var(--white);
             display: flex;
@@ -96,13 +86,11 @@
             background-color: var(--primary-dark);
         }
 
-        /* Dashboard Layout */
         .dashboard-container {
             display: flex;
             min-height: calc(100vh - 70px);
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 280px;
             background-color: rgba(255, 255, 255, 0.9);
@@ -158,6 +146,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none;
         }
 
         .dashboard-button:hover {
@@ -166,13 +155,13 @@
             transform: translateX(5px);
         }
 
-        .dashboard-button i {
-            font-size: 20px;
-        }
-
         .dashboard-button.active {
             background-color: var(--primary);
             color: var(--white);
+        }
+
+        .dashboard-button i {
+            font-size: 20px;
         }
 
         .sidebar-footer {
@@ -183,69 +172,131 @@
             color: var(--dark-grey);
         }
 
-        /* Main Content Styles */
-        .main-dashboard {
+        .main-content {
             flex: 1;
             padding: 30px;
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
-        .welcome-box h1 {
-            font-size: 28px;
+        .container {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+        }
+
+        h2 {
             color: var(--primary);
+            font-size: 24px;
+            font-weight: 600;
         }
 
-        .welcome-box h1 span {
-            color: var(--dark);
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
         }
 
-        .dashboard-content-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+            margin-bottom: 20px;
         }
 
-        @media (max-width: 1200px) {
-            .dashboard-content-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .info-box {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border: 1px solid rgba(169, 68, 66, 0.2);
-            height: 100%;
-        }
-
-        .info-box h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--primary);
-            padding-bottom: 10px;
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
             border-bottom: 1px solid var(--grey);
         }
 
-        .profile-details p {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--grey);
+        th {
+            background-color: var(--primary);
+            color: var(--white);
+            position: sticky;
+            top: 0;
         }
 
-        .profile-details p strong {
-            color: var(--primary);
+        tr:nth-child(even) {
+            background-color: var(--light);
         }
 
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
+        tr:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-back {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 15px;
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
         }
 
         /* Notice Panel Styles */
@@ -280,34 +331,6 @@
         .notice-list li:hover {
             color: var(--primary);
         }
-
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .dashboard-container {
-                flex-direction: column;
-            }
-            .sidebar, .notice-panel {
-                width: 100%;
-            }
-            .sidebar {
-                order: 1;
-            }
-            .main-dashboard {
-                order: 2;
-            }
-            .notice-panel {
-                order: 3;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 15px;
-            }
-            .main-dashboard {
-                padding: 15px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -316,9 +339,7 @@
             <img src="img/logo.png.png" alt="Polytechnic Hostel Logo">
         </div>
         <nav>
-            <form action="staffLogout.jsp" method="post">
-                <button type="submit" class="logout-btn">Log Out</button>
-            </form>
+            <button class="logout-btn" onclick="window.location.href='logout'">Log Out</button>
         </nav>
     </header>
 
@@ -326,7 +347,7 @@
         <aside class="sidebar">
             <div class="staff-card">
                 <img src="img/staff.png" alt="Staff Photo" class="profile-pic"/>
-                <h3><%= session.getAttribute("staffName") %></h3>
+                <h3>${sessionScope.staffName}</h3>
                 <p>Staff ID: <%= session.getAttribute("staffId") %></p>
             </div>
             <div class="button-group">
@@ -336,7 +357,7 @@
                 <a href="staffChangePassword" class="dashboard-button <c:if test="${requestScope.currentPage eq 'staffChangePassword'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Change Password
                 </a>
-                <a href="staffList" class="dashboard-button <c:if test="${requestScope.currentPage eq 'staffList'}">active</c:if>">
+                <a href="staffList" class="dashboard-button active <c:if test="${requestScope.currentPage eq 'staffList'}">active</c:if>">
                     <i class='bx bxs-group'></i> View Staff
                 </a>
                 <a href="roomList" class="dashboard-button <c:if test="${requestScope.currentPage eq 'roomList'}">active</c:if>">
@@ -345,44 +366,56 @@
                 <a href="viewStaffMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage eq 'viewStaffMaintenance'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Maintenance
                 </a>
-                <a href="ViewAppealServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'ViewAppealServlet'}">active</c:if>">
-                    <i class='bx bxs-message-alt-error'></i> Appeal Requests
-                </a>
+                
             </div>
             <footer class="sidebar-footer">
                 <small>&copy; 2023 Polytechnic Hostel</small>
             </footer>
         </aside>
 
-        <main class="main-dashboard">
-            <section class="welcome-box">
-                <h1>Welcome Back, <span><%= session.getAttribute("staffName") %></span></h1>
-                
-                <!-- Dashboard Content Container -->
-                <div class="dashboard-content-container">
-                    <!-- Profile Information Container -->
-                    <div class="info-box">
-                        <h2>Profile Information</h2>
-                        <div class="profile-details">
-                            <p><strong>Staff ID:</strong> <span><%= session.getAttribute("staffId") %></span></p>
-                            <p><strong>Full Name:</strong> <span><%= session.getAttribute("staffName") %></span></p>
-                            <p><strong>Email:</strong> <span><%= session.getAttribute("staffEmail") != null ? session.getAttribute("staffEmail") : "Not set" %></span></p>
-                            <p><strong>Phone Number:</strong> <span><%= session.getAttribute("staffNumber") != null ? session.getAttribute("staffNumber") : "Not set" %></span></p>
-                            <p><strong>Position:</strong> <span><%= session.getAttribute("staffPosition") != null ? session.getAttribute("staffPosition") : "Not set" %></span></p>                       
-                        </div>
-                    </div>
-                    
-                    <!-- Maintenance Requests Chart Container -->
-                    <div class="info-box">
-                        <h2>Maintenance Requests</h2>
-                        <div class="chart-container">
-                            <canvas id="maintenanceChart"></canvas>
-                        </div>
-                    </div>
+        <main class="main-content">
+            <div class="container">
+                <div class="top-bar">
+                    <h2>Staff List</h2>
                 </div>
-            </section>
-        </main>
 
+                <c:if test="${not empty error}">
+                    <div class="message error-message">${error}</div>
+                </c:if>
+
+                <c:if test="${not empty success}">
+                    <div class="message success-message">${success}</div>
+                </c:if>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Staff ID</th>
+                                <th>Name</th>
+                                <th>Phone Number</th>
+                                <th>Email</th>
+                                <th>Position</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="staff" items="${staffList}">
+                                <tr>
+                                    <td>${staff.staffID}</td>
+                                    <td>${staff.staffName}</td>
+                                    <td>${staff.staffNumber}</td>
+                                    <td>${staff.staffEmail}</td>
+                                    <td>${staff.staffPosition}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+            </div>
+        </main>
+        
         <aside class="notice-panel">
             <h2>Notices</h2>
             <ul class="notice-list">
@@ -392,57 +425,5 @@
             </ul>
         </aside>
     </div>
-
-    <script>
-        // Maintenance Requests Pie Chart
-        const maintenanceCtx = document.getElementById('maintenanceChart').getContext('2d');
-        const maintenanceChart = new Chart(maintenanceCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Pending', 'In Progress', 'Completed'],
-                datasets: [{
-                    data: [
-                        ${pendingCount != null ? pendingCount : 0},
-                        ${inProgressCount != null ? inProgressCount : 0},
-                        ${completedCount != null ? completedCount : 0}
-                        
-                    ],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.raw || 0;
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = Math.round((value / total) * 100);
-                                return `${label}: ${value} (${percentage}%)`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>

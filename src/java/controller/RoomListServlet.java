@@ -12,7 +12,7 @@ public class RoomListServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private final int MAX_CAPACITY = 4; // Maximum beds per room
-    private final int ROOMS_PER_PAGE = 15; // Increased to 15 rooms per page
+    private final int ROOMS_PER_PAGE = 10; // Increased to 15 rooms per page
 
     private final String jdbcURL = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&useSSL=false";
     private final String jdbcUsername = "farish";
@@ -43,7 +43,10 @@ public class RoomListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+         HttpSession session = request.getSession();
+            String staffPosition = (String) session.getAttribute("staffPosition");
+        
         String collegePrefix = request.getParameter("college");
         if (collegePrefix == null) {
             collegePrefix = "HT"; // Default to Hang Tuah
@@ -98,7 +101,13 @@ public class RoomListServlet extends HttpServlet {
         request.setAttribute("college", collegePrefix);
         request.setAttribute("page", page);
         request.setAttribute("totalPages", totalPages);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("roomList.jsp");
-        dispatcher.forward(request, response);
+            
+        if ("Staff".equalsIgnoreCase(staffPosition)) {
+                            request.getRequestDispatcher("roomList.jsp").forward(request, response);
+                        } else {
+                            request.getRequestDispatcher("otherRoomList.jsp").forward(request, response);
+
+                        }
+        
     }
 }

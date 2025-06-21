@@ -17,14 +17,16 @@ import javax.servlet.http.HttpSession;
 
 import model.StudentAppeal;
 
+@WebServlet("/viewAppeals")
 public class ViewAppealServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private static final int APPEALS_PER_PAGE = 7; // Number of appeals to show per page
 
-    // --- Database Connection Details (Now duplicated here) ---
+    // Database Connection Details
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&useSSL=false";
-    private static final String DB_USERNAME = "farish"; // Your database username
-    private static final String DB_PASSWORD = "kakilangit"; // Your database password
+    private static final String DB_USERNAME = "farish";
+    private static final String DB_PASSWORD = "kakilangit";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,9 +39,19 @@ public class ViewAppealServlet extends HttpServlet {
         }
 
         String studentId = (String) session.getAttribute("studentId");
-        String staffId = (String) session.getAttribute("staffId"); // Corrected to lowercase 'id'
+        String staffId = (String) session.getAttribute("staffId");
+
+        // Get current page number from request, default to 1
+        int currentPage = 1;
+        try {
+            currentPage = Integer.parseInt(request.getParameter("page"));
+        } catch (NumberFormatException e) {
+            // Default to page 1 if invalid page number
+        }
 
         List<StudentAppeal> appealList = new ArrayList<>();
+        int totalAppeals = 0;
+        int totalPages = 1;
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -49,6 +61,30 @@ public class ViewAppealServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(JDBC_URL, DB_USERNAME, DB_PASSWORD);
 
+            // First, get total count of appeals
+            String countSql;
+            if (studentId != null) {
+                countSql = "SELECT COUNT(*) FROM student_appeal WHERE studentID = ?";
+            } else {
+                countSql = "SELECT COUNT(*) FROM student_appeal";
+            }
+
+            try (PreparedStatement countStmt = conn.prepareStatement(countSql)) {
+                if (studentId != null) {
+                    countStmt.setString(1, studentId);
+                }
+                rs = countStmt.executeQuery();
+                if (rs.next()) {
+                    totalAppeals = rs.getInt(1);
+                    totalPages = (int) Math.ceil((double) totalAppeals / APPEALS_PER_PAGE);
+                    
+                    // Ensure currentPage is within valid range
+                    if (currentPage < 1) currentPage = 1;
+                    if (currentPage > totalPages) currentPage = totalPages;
+                }
+            }
+
+            // Then get appeals for the current page
             String sql;
             if (studentId != null) {
                 // SQL for student's view
@@ -56,20 +92,27 @@ public class ViewAppealServlet extends HttpServlet {
                       "s.studentID, s.studName, s.studNumber, s.studCGPA, s.houseIncome " +
                       "FROM student_appeal sa " +
                       "LEFT JOIN student s ON sa.studentID = s.studentID " +
-                      "WHERE sa.studentID = ? ORDER BY sa.appealDate DESC";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, studentId);
-            } else if (staffId != null) {
+                      "WHERE sa.studentID = ? ORDER BY sa.appealDate DESC LIMIT ? OFFSET ?";
+            } else {
                 // SQL for staff's view
                 sql = "SELECT sa.appealID, sa.reason AS appealReason, sa.appealDate, sa.appealStatus, " +
                       "s.studentID, s.studName, s.studNumber, s.studCGPA, s.houseIncome " +
                       "FROM student_appeal sa " +
                       "LEFT JOIN student s ON sa.studentID = s.studentID " +
-                      "ORDER BY sa.appealDate DESC";
-                pstmt = conn.prepareStatement(sql);
+                      "ORDER BY sa.appealDate DESC LIMIT ? OFFSET ?";
+            }
+
+            pstmt = conn.prepareStatement(sql);
+            
+            int offset = (currentPage - 1) * APPEALS_PER_PAGE;
+            
+            if (studentId != null) {
+                pstmt.setString(1, studentId);
+                pstmt.setInt(2, APPEALS_PER_PAGE);
+                pstmt.setInt(3, offset);
             } else {
-                response.sendRedirect("login.jsp"); // Fallback, though checked above
-                return;
+                pstmt.setInt(1, APPEALS_PER_PAGE);
+                pstmt.setInt(2, offset);
             }
 
             rs = pstmt.executeQuery();
@@ -90,13 +133,10 @@ public class ViewAppealServlet extends HttpServlet {
             }
 
             request.setAttribute("appealList", appealList);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("totalPages", totalPages);
             
-            String targetJSP;
-            if (studentId != null) {
-                targetJSP = "appealList.jsp"; // Assuming student also views appealList.jsp
-            } else {
-                targetJSP = "appealList.jsp"; // Staff's view
-            }
+            String targetJSP = studentId != null ? "appealList.jsp" : "appealList.jsp";
             request.getRequestDispatcher(targetJSP).forward(request, response);
 
         } catch (ClassNotFoundException e) {

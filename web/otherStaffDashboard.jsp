@@ -315,10 +315,8 @@
         <div class="logo" onclick="window.location.href='staffDashboard.jsp'">
             <img src="img/logo.png.png" alt="Polytechnic Hostel Logo">
         </div>
-        <nav>
-            <form action="staffLogout.jsp" method="post">
-                <button type="submit" class="logout-btn">Log Out</button>
-            </form>
+        <nav>            
+                <button class="logout-btn" onclick="window.location.href='logout'">Log Out</button>
         </nav>
     </header>
 
@@ -345,9 +343,7 @@
                 <a href="viewStaffMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage eq 'viewStaffMaintenance'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Maintenance
                 </a>
-                <a href="ViewAppealServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'ViewAppealServlet'}">active</c:if>">
-                    <i class='bx bxs-message-alt-error'></i> Appeal Requests
-                </a>
+                
             </div>
             <footer class="sidebar-footer">
                 <small>&copy; 2023 Polytechnic Hostel</small>

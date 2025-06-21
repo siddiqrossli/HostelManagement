@@ -16,6 +16,8 @@ public class StaffListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+            String staffPosition = (String) session.getAttribute("staffPosition");
         ArrayList<Staff> staffList = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD);
@@ -33,8 +35,13 @@ public class StaffListServlet extends HttpServlet {
             }
 
             request.setAttribute("staffList", staffList);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("staffList.jsp");
-            dispatcher.forward(request, response);
+            if ("Staff".equalsIgnoreCase(staffPosition)) {
+                            request.getRequestDispatcher("staffList.jsp").forward(request, response);
+                        } else {
+                            request.getRequestDispatcher("otherStaffList.jsp").forward(request, response);
+
+                        }
+            
 
         } catch (SQLException e) {
             throw new ServletException("Database error: " + e.getMessage(), e);

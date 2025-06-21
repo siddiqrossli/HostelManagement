@@ -126,7 +126,7 @@
             backdrop-filter: blur(5px);
         }
 
-        .student-card {
+        .student-card {            
             text-align: center;
             padding: 20px 0;
             border-bottom: 1px solid var(--grey);

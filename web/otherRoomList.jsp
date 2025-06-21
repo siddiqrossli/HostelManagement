@@ -408,23 +408,20 @@
                 <p>Staff ID: <%= session.getAttribute("staffId") %></p>
             </div>
             <div class="button-group">
-                <a href="updateStaffProfile" class="dashboard-button <c:if test="${requestScope.currentPage eq 'updateStaffProfile'}">active</c:if>">
+                <a href="updateStaffProfile" class="dashboard-button <c:if test="${requestScope.currentPage eq 'updateOtherStaffProfile'}">active</c:if>">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
-                <a href="staffChangePassword" class="dashboard-button <c:if test="${requestScope.currentPage eq 'staffChangePassword'}">active</c:if>">
+                <a href="staffChangePassword" class="dashboard-button <c:if test="${requestScope.currentPage eq 'otherStaffChangePassword'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Change Password
                 </a>
-                <a href="staffList" class="dashboard-button <c:if test="${requestScope.currentPage eq 'staffList'}">active</c:if>">
+                <a href="staffList" class="dashboard-button <c:if test="${requestScope.currentPage eq 'otherStaffList'}">active</c:if>">
                     <i class='bx bxs-group'></i> View Staff
                 </a>
-                <a href="roomList" class="dashboard-button active <c:if test="${requestScope.currentPage eq 'roomList'}">active</c:if>">
+                <a href="roomList" class="dashboard-button active <c:if test="${requestScope.currentPage eq 'otherRoomList'}">active</c:if>">
                     <i class='bx bxs-building-house'></i> View Rooms
                 </a>
-                <a href="viewStaffMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage eq 'viewStaffMaintenance'}">active</c:if>">
+                <a href="viewStaffMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage eq 'viewOtherStaffMaintenance'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Maintenance
-                </a>
-                    <a href="ViewAppealServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'ViewAppealServlet'}">active</c:if>">
-                    <i class='bx bxs-message-alt-error'></i> Appeal Requests
                 </a>
             </div>
             <footer class="sidebar-footer">

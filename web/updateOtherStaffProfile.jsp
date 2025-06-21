@@ -1,23 +1,70 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.SQLException" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%
+    // Ensure staff is logged in
     if (session.getAttribute("staffId") == null) {
         response.sendRedirect("staffLogin.jsp");
         return;
     }
-%>
 
+    String staffId = (String) session.getAttribute("staffId");
+    String staffName = "";
+    String staffNumber = "";
+    String staffEmail = "";
+
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    String JDBC_URL = "jdbc:mysql://localhost:3306/hostel_management?zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&useSSL=false";
+    String DB_USERNAME = "farish";
+    String DB_PASSWORD = "kakilangit";
+
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection(JDBC_URL, DB_USERNAME, DB_PASSWORD);
+
+        String sql = "SELECT staffName, staffNumber, staffEmail FROM staff WHERE staffID = ?";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, staffId);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            staffName = rs.getString("staffName");
+            staffNumber = rs.getString("staffNumber");
+            staffEmail = rs.getString("staffEmail");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        request.setAttribute("message", "Database error: " + e.getMessage());
+        request.setAttribute("messageType", "error");
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+        request.setAttribute("message", "System error: JDBC driver not found.");
+        request.setAttribute("messageType", "error");
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Dashboard - Polytechnic Hostel</title>
+    <title>Update Profile - Polytechnic Hostel</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #a94442;
@@ -55,7 +102,6 @@
             color: inherit;
         }
 
-        /* Header Styles */
         header {
             background-color: var(--white);
             display: flex;
@@ -96,13 +142,11 @@
             background-color: var(--primary-dark);
         }
 
-        /* Dashboard Layout */
         .dashboard-container {
             display: flex;
             min-height: calc(100vh - 70px);
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 280px;
             background-color: rgba(255, 255, 255, 0.9);
@@ -166,13 +210,13 @@
             transform: translateX(5px);
         }
 
-        .dashboard-button i {
-            font-size: 20px;
-        }
-
         .dashboard-button.active {
             background-color: var(--primary);
             color: var(--white);
+        }
+
+        .dashboard-button i {
+            font-size: 20px;
         }
 
         .sidebar-footer {
@@ -183,72 +227,108 @@
             color: var(--dark-grey);
         }
 
-        /* Main Content Styles */
-        .main-dashboard {
+        .main-content {
             flex: 1;
             padding: 30px;
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
-        .welcome-box h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 1500px;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-container h1 {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1500px;
+            height: 100%;
+            max-height: 825px; /* Consider if you need a fixed height or min-height */;
             color: var(--primary);
+            font-size: 24px;
+            font-weight: 600;
         }
 
-        .welcome-box h1 span {
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--grey);
+            font-size: 15px;
             color: var(--dark);
         }
 
-        .dashboard-content-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+        .form-group input[readonly] {
+            background-color: #e9e9e9;
+            cursor: not-allowed;
         }
 
-        @media (max-width: 1200px) {
-            .dashboard-content-container {
-                grid-template-columns: 1fr;
-            }
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
-        .info-box {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border: 1px solid rgba(169, 68, 66, 0.2);
-            height: 100%;
-        }
-
-        .info-box h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--primary);
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--grey);
-        }
-
-        .profile-details p {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--grey);
-        }
-
-        .profile-details p strong {
-            color: var(--primary);
-        }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
+        .btn-submit {
             width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: var(--white);
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
         }
 
-        /* Notice Panel Styles */
+        .btn-submit:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
         .notice-panel {
             width: 280px;
             background-color: rgba(255, 255, 255, 0.9);
@@ -281,7 +361,6 @@
             color: var(--primary);
         }
 
-        /* Responsive Design */
         @media (max-width: 1200px) {
             .dashboard-container {
                 flex-direction: column;
@@ -292,7 +371,7 @@
             .sidebar {
                 order: 1;
             }
-            .main-dashboard {
+            .main-content {
                 order: 2;
             }
             .notice-panel {
@@ -304,21 +383,22 @@
             header {
                 padding: 10px 15px;
             }
-            .main-dashboard {
+            .main-content {
                 padding: 15px;
+            }
+            .form-container {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo" onclick="window.location.href='staffDashboard.jsp'">
+        <div class="logo" onclick="window.location.href='otherStaffDashboard.jsp'">
             <img src="img/logo.png.png" alt="Polytechnic Hostel Logo">
         </div>
         <nav>
-            <form action="staffLogout.jsp" method="post">
-                <button type="submit" class="logout-btn">Log Out</button>
-            </form>
+            <button class="logout-btn" onclick="window.location.href='logout'">Log Out</button>
         </nav>
     </header>
 
@@ -326,11 +406,11 @@
         <aside class="sidebar">
             <div class="staff-card">
                 <img src="img/staff.png" alt="Staff Photo" class="profile-pic"/>
-                <h3><%= session.getAttribute("staffName") %></h3>
+                <h3><%= staffName %></h3>
                 <p>Staff ID: <%= session.getAttribute("staffId") %></p>
             </div>
             <div class="button-group">
-                <a href="updateStaffProfile" class="dashboard-button <c:if test="${requestScope.currentPage eq 'updateStaffProfile'}">active</c:if>">
+                <a href="updateStaffProfile" class="dashboard-button active <c:if test="${requestScope.currentPage eq 'updateStaffProfile'}">active</c:if>">
                     <i class='bx bxs-user'></i> Update Profile
                 </a>
                 <a href="staffChangePassword" class="dashboard-button <c:if test="${requestScope.currentPage eq 'staffChangePassword'}">active</c:if>">
@@ -345,42 +425,42 @@
                 <a href="viewStaffMaintenance" class="dashboard-button <c:if test="${requestScope.currentPage eq 'viewStaffMaintenance'}">active</c:if>">
                     <i class='bx bxs-wrench'></i> Maintenance
                 </a>
-                <a href="ViewAppealServlet" class="dashboard-button <c:if test="${requestScope.currentPage eq 'ViewAppealServlet'}">active</c:if>">
-                    <i class='bx bxs-message-alt-error'></i> Appeal Requests
-                </a>
             </div>
             <footer class="sidebar-footer">
                 <small>&copy; 2023 Polytechnic Hostel</small>
             </footer>
         </aside>
 
-        <main class="main-dashboard">
-            <section class="welcome-box">
-                <h1>Welcome Back, <span><%= session.getAttribute("staffName") %></span></h1>
-                
-                <!-- Dashboard Content Container -->
-                <div class="dashboard-content-container">
-                    <!-- Profile Information Container -->
-                    <div class="info-box">
-                        <h2>Profile Information</h2>
-                        <div class="profile-details">
-                            <p><strong>Staff ID:</strong> <span><%= session.getAttribute("staffId") %></span></p>
-                            <p><strong>Full Name:</strong> <span><%= session.getAttribute("staffName") %></span></p>
-                            <p><strong>Email:</strong> <span><%= session.getAttribute("staffEmail") != null ? session.getAttribute("staffEmail") : "Not set" %></span></p>
-                            <p><strong>Phone Number:</strong> <span><%= session.getAttribute("staffNumber") != null ? session.getAttribute("staffNumber") : "Not set" %></span></p>
-                            <p><strong>Position:</strong> <span><%= session.getAttribute("staffPosition") != null ? session.getAttribute("staffPosition") : "Not set" %></span></p>                       
-                        </div>
+        <main class="main-content">
+            <div class="form-container">
+                <h1>Update Your Profile</h1>
+
+                <% if (request.getAttribute("message") != null) { %>
+                    <div class="message <%= request.getAttribute("messageType") %>">
+                        <%= request.getAttribute("message") %>
                     </div>
-                    
-                    <!-- Maintenance Requests Chart Container -->
-                    <div class="info-box">
-                        <h2>Maintenance Requests</h2>
-                        <div class="chart-container">
-                            <canvas id="maintenanceChart"></canvas>
-                        </div>
+                <% } %>
+
+                <form action="updateStaffProfile" method="post">
+                    <div class="form-group">
+                        <label for="staffId">Staff ID</label>
+                        <input type="text" id="staffId" name="staffId" value="<%= staffId %>" readonly>
                     </div>
-                </div>
-            </section>
+                    <div class="form-group">
+                        <label for="staffName">Full Name</label>
+                        <input type="text" id="staffName" name="staffName" value="<%= staffName %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffNumber">Phone Number</label>
+                        <input type="text" id="staffNumber" name="staffNumber" value="<%= staffNumber %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffEmail">Email</label>
+                        <input type="email" id="staffEmail" name="staffEmail" value="<%= staffEmail %>" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Update Profile</button>
+                </form>
+            </div>
         </main>
 
         <aside class="notice-panel">
@@ -392,57 +472,5 @@
             </ul>
         </aside>
     </div>
-
-    <script>
-        // Maintenance Requests Pie Chart
-        const maintenanceCtx = document.getElementById('maintenanceChart').getContext('2d');
-        const maintenanceChart = new Chart(maintenanceCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Pending', 'In Progress', 'Completed'],
-                datasets: [{
-                    data: [
-                        ${pendingCount != null ? pendingCount : 0},
-                        ${inProgressCount != null ? inProgressCount : 0},
-                        ${completedCount != null ? completedCount : 0}
-                        
-                    ],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.raw || 0;
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = Math.round((value / total) * 100);
-                                return `${label}: ${value} (${percentage}%)`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>

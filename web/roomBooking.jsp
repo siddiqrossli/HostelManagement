@@ -477,8 +477,8 @@
                     %>
                         <div class="room-info">
                             <h3>Room Details</h3>
-                            <p><strong>Room:</strong> <%= selectedRoomId %></p>
-                            <p><strong>Availability:</strong> 
+                            <p><strong>Room:</strong> <%= selectedRoomId %>  
+                                <strong style="text-indent: 30px;">Availability:</strong>
                                 <span class="room-capacity <%= occupantCount >= 4 ? "capacity-full" : "capacity-available" %>">
                                     <%= 4 - occupantCount %> of 4 spaces remaining
                                 </span>
